@@ -85,4 +85,28 @@
 h2 {
     color: #333;
     margin-bottom: 15px;
+}
+
+.data-controls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.danger-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.danger-button:hover {
+    background-color: #c82333;
+}
+
+.danger-button:active {
+    background-color: #bd2130;
 } 

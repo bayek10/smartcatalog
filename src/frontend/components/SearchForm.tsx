@@ -35,6 +35,26 @@ export const SearchForm = () => {
         setProcessedData(data.products);
     };
 
+    const handleDeleteAllData = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/debug/products', {
+                method: 'DELETE',
+            });
+            
+            if (response.ok) {
+                // Clear the local state
+                setProcessedData([]);
+                setResults([]);
+                alert('All products deleted successfully');
+            } else {
+                const error = await response.json();
+                throw new Error(error.detail || 'Failed to delete products');
+            }
+        } catch (error) {
+            alert(`Error deleting products: ${error.message}`);
+        }
+    };
+
     return (
         <div className="container">
             <div className="upload-section">
@@ -47,12 +67,20 @@ export const SearchForm = () => {
                     />
                     <button type="submit" className="primary-button">Upload PDF</button>
                 </form>
-                <button 
-                    onClick={handleViewProcessedData} 
-                    className="secondary-button"
-                >
-                    View Processed Data
-                </button>
+                <div className="data-controls">
+                    <button 
+                        onClick={handleViewProcessedData} 
+                        className="secondary-button"
+                    >
+                        View Processed Data
+                    </button>
+                    <button 
+                        onClick={handleDeleteAllData} 
+                        className="danger-button"
+                    >
+                        Delete All Data
+                    </button>
+                </div>
             </div>
 
             <div className="search-section">

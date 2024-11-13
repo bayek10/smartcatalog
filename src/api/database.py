@@ -118,3 +118,14 @@ class ProductDB:
             'source_pdf': product.source_pdf,
             'page_number': product.page_number
         }
+
+    def clear_products(self):
+        try:
+            logger.info("Attempting to clear all products from database...")
+            self.session.query(Product).delete()
+            self.session.commit()
+            logger.info("Successfully cleared all products")
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            logger.error(f"Error clearing products: {str(e)}")
+            raise

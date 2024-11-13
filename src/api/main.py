@@ -54,6 +54,14 @@ async def get_all_products():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.delete("/debug/products")
+async def clear_all_products():
+    try:
+        db.clear_products()
+        return {"message": "All products cleared successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
     # Save uploaded file temporarily
