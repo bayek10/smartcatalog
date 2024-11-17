@@ -6,6 +6,7 @@ from .models import Base, Product
 from .config import DATABASE_URL
 import logging
 import os
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -64,8 +65,7 @@ class ProductDB:
             logging.error(f"Error getting product: {str(e)}")
             raise
     
-    def search(self, query: str, category: Optional[str] = None, 
-              min_price: Optional[float] = None, max_price: Optional[float] = None) -> List[Dict]:
+    def search(self, query: str, category: Optional[str] = None) -> List[Dict]:
         try:
             # Start with base query
             db_query = self.session.query(Product)
@@ -73,23 +73,17 @@ class ProductDB:
             # Add search conditions
             if query:
                 search_filter = or_(
-                    Product.name.ilike(f'%{query}%'),
-                    Product.brand.ilike(f'%{query}%'),
-                    Product.product_type.ilike(f'%{query}%'),
-                    Product.text_content.ilike(f'%{query}%')
+                    Product.product_name.ilike(f'%{query}%'),
+                    Product.brand_name.ilike(f'%{query}%'),
+                    Product.designer.ilike(f'%{query}%'),
+                    Product.type_of_product.ilike(f'%{query}%')
                 )
                 db_query = db_query.filter(search_filter)
             
             # Add category filter
             if category:
-                db_query = db_query.filter(Product.product_type.ilike(f'%{category}%'))
-            
-            # Add price range filters
-            if min_price is not None:
-                db_query = db_query.filter(Product.price >= min_price)
-            if max_price is not None:
-                db_query = db_query.filter(Product.price <= max_price)
-            
+                db_query = db_query.filter(Product.type_of_product.ilike(f'%{category}%'))
+                        
             # Execute query and convert results to dict
             products = db_query.all()
             return [self._product_to_dict(p) for p in products]
@@ -109,14 +103,13 @@ class ProductDB:
     def _product_to_dict(self, product: Product) -> Dict:
         return {
             'id': product.id,
-            'name': product.name,
-            'brand': product.brand,
-            'type': product.product_type,
-            'dimensions': product.dimensions,
-            'price': str(product.price) if product.price else None,
-            'text_content': product.text_content,
-            'source_pdf': product.source_pdf,
-            'page_number': product.page_number
+            'product_name': product.product_name,
+            'brand_name': product.brand_name,
+            'designer': product.designer,
+            'year': product.year,
+            'type_of_product': product.type_of_product,
+            'all_colors': product.all_colors,
+            'page_reference': product.page_reference
         }
 
     def clear_products(self):
@@ -128,4 +121,43 @@ class ProductDB:
         except SQLAlchemyError as e:
             self.session.rollback()
             logger.error(f"Error clearing products: {str(e)}")
+            raise
+
+    def import_from_json(self, json_file_path: str) -> Dict:
+        """Import products from a JSON file"""
+        try:
+            logger.info(f"Reading JSON file from: {json_file_path}")
+            with open(json_file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            
+            furniture_items = data.get('furnitureItems', [])
+            logger.info(f"Found {len(furniture_items)} items to import")
+            
+            added_count = 0
+            
+            for item in furniture_items:
+                try:
+                    product = Product(
+                        product_name=item.get('product_name'),
+                        brand_name=item.get('brand_name'),
+                        designer=item.get('designer'),
+                        year=item.get('year'),
+                        type_of_product=item.get('type_of_product'),
+                        all_colors=item.get('all_colors', []),
+                        page_reference=item.get('page_reference', {})
+                    )
+                    self.session.add(product)
+                    added_count += 1
+                except Exception as e:
+                    logger.error(f"Error adding product: {str(e)}")
+                    raise
+            
+            self.session.commit()
+            logger.info(f"Successfully imported {added_count} products")
+            return {"message": f"Successfully imported {added_count} products"}
+            
+        except Exception as e:
+            self.session.rollback()
+            logging.error(f"Error importing JSON: {str(e)}")
+            # Re-raise the exception after rollback
             raise

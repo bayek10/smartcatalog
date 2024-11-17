@@ -35,6 +35,40 @@ export const SearchForm = () => {
         setProcessedData(data.products);
     };
 
+    const handleJsonUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!file) {
+            alert('Please select a file first');
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('http://localhost:8080/import-json', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to import JSON');
+            }
+
+            const result = await response.json();
+            alert(result.message || 'Successfully imported JSON data');
+            
+            // Clear the file input
+            setFile(null);
+            // Refresh the processed data view
+            handleViewProcessedData();
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert(`Error uploading JSON: ${error.message}`);
+        }
+    };
+
     const handleDeleteAllData = async () => {
         try {
             const response = await fetch('http://localhost:8080/debug/products', {
@@ -67,6 +101,17 @@ export const SearchForm = () => {
                     />
                     <button type="submit" className="primary-button">Upload PDF</button>
                 </form>
+
+                <h2>Upload JSON</h2>
+                <form onSubmit={handleJsonUpload} className="upload-form">
+                    <input 
+                        type="file"
+                        accept=".json"
+                        onChange={(e) => setFile(e.target.files?.[0] || null)}
+                    />
+                    <button type="submit" className="primary-button">Import JSON</button>
+                </form>
+
                 <div className="data-controls">
                     <button 
                         onClick={handleViewProcessedData} 
