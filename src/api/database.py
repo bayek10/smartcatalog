@@ -108,8 +108,8 @@ class ProductDB:
             'designer': product.designer,
             'year': product.year,
             'type_of_product': product.type_of_product,
-            'all_colors': product.all_colors,
-            'page_reference': product.page_reference
+            'all_colors': product.all_colors or [], # Ensure it's never null
+            'page_reference': product.page_reference or {} # Ensure it's never null
         }
 
     def clear_products(self):

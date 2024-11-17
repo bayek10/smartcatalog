@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import inspect
 from typing import Optional
 from .database import ProductDB, db_session
@@ -37,6 +38,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create PDF directory (use absolute path for clarity)
+PDF_STORAGE_PATH = "pdfs"  # or "public/pdfs" if you prefer that structure
+os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
+
+# Mount the PDF directory
+app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
 
 @app.get("/search")
 async def search_products(

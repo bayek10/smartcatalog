@@ -1,5 +1,20 @@
 import React, { useState } from 'react';
 import './SearchForm.css';
+import './ProductTable.css';
+
+type Product = {
+    id: number;
+    product_name: string;
+    brand_name: string;
+    designer: string;
+    year: number;
+    type_of_product: string;
+    all_colors: string[];
+    page_reference: {
+        file_path: string;
+        page_numbers: number[];
+    };
+};
 
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
@@ -89,6 +104,21 @@ export const SearchForm = () => {
         }
     };
 
+    const renderColorsList = (colors: string[]) => {
+        if (!colors || colors.length === 0) return '-';
+        const displayColors = colors.slice(0, 3);
+        return displayColors.join(', ') + (colors.length > 3 ? ` +${colors.length - 3} more` : '');
+    };
+
+    const getPdfLink = (pageRef: { file_path: string; page_numbers: number[] }) => {
+        if (!pageRef || !pageRef.page_numbers || pageRef.page_numbers.length === 0) return '#';
+        
+        // Extract just the filename from the full path
+        const fileName = pageRef.file_path.split('/').pop() || '';
+        
+        return `http://localhost:8080/pdfs/${encodeURIComponent(fileName)}#page=${pageRef.page_numbers[0]}`;
+    };
+
     return (
         <div className="container">
             <div className="upload-section">
@@ -117,7 +147,7 @@ export const SearchForm = () => {
                         onClick={handleViewProcessedData} 
                         className="secondary-button"
                     >
-                        View Processed Data
+                        View Products
                     </button>
                     <button 
                         onClick={handleDeleteAllData} 
@@ -164,23 +194,46 @@ export const SearchForm = () => {
 
             <div className="processed-section">
                 {processedData.length > 0 && (
-                    <div className="processed-container">
-                        <h2>Processed Data</h2>
-                        <div className="results-grid">
-                            {processedData.map(product => (
-                                <div key={product.id} className="product-card">
-                                    <h3>{product.name}</h3>
-                                    <p><strong>Price:</strong> {product.price}</p>
-                                    <p><strong>Dimensions:</strong> {product.dimensions}</p>
-                                    <p className="source-info">
-                                        PDF: {product.source_pdf} (Page {product.page_number})
-                                    </p>
-                                    <p className="text-preview">
-                                        <strong>Preview:</strong> {product.text_content}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="table-container">
+                        <h2>Product Catalog</h2>
+                        <table className="product-table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Brand</th>
+                                    <th>Designer</th>
+                                    <th>Year</th>
+                                    <th>Type</th>
+                                    <th>Colors</th>
+                                    <th>PDF Page</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {processedData.map((product: Product) => (
+                                    <tr key={product.id}>
+                                        <td>{product.product_name || '-'}</td>
+                                        <td>{product.brand_name || '-'}</td>
+                                        <td>{product.designer || '-'}</td>
+                                        <td>{product.year || '-'}</td>
+                                        <td>{product.type_of_product || '-'}</td>
+                                        <td title={product.all_colors?.join(', ')}>
+                                            {renderColorsList(product.all_colors)}
+                                        </td>
+                                        <td>
+                                            {product.page_reference && (
+                                                <a 
+                                                    href={getPdfLink(product.page_reference)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    View PDF
+                                                </a>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 )}
             </div>
