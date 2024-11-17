@@ -49,17 +49,24 @@ app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
 @app.get("/search")
 async def search_products(
     query: str,
-    category: Optional[str] = None,
-    min_price: Optional[float] = None,
-    max_price: Optional[float] = None
+    category: Optional[str] = None
 ):
-    results = db.search(
-        query=query,
-        category=category,
-        min_price=min_price,
-        max_price=max_price
-    )
-    return results
+    """
+    Search products by query string.
+    Query matches against product name, brand name, designer, type, color, year
+    Optionally filter by category/type.
+    """
+    try:
+        logger.info(f"Searching for query: {query}")
+        results = db.search(
+            query=query,
+            category=category
+        )
+        logger.info(f"Found {len(results)} results")
+        return results
+    except Exception as e:
+        logger.error(f"Search error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/product/{product_id}")
 async def get_product(product_id: str):

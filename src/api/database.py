@@ -41,14 +41,16 @@ class ProductDB:
         try:
             for product_data in products:
                 product = Product(
-                    name=product_data.get('name'),
-                    brand=product_data.get('brand'),
-                    product_type=product_data.get('type'),
-                    dimensions=product_data.get('dimensions'),
-                    price=float(product_data.get('price', 0)) if product_data.get('price') else None,
-                    text_content=product_data.get('text_content'),
-                    source_pdf=product_data.get('source_pdf'),
-                    page_number=product_data.get('page_number')
+                    product_name=product_data.get('product_name'),
+                    brand_name=product_data.get('brand_name'),
+                    designer=product_data.get('designer'),
+                    year=product_data.get('year'),
+                    type_of_product=product_data.get('type_of_product'),
+                    all_colors=product_data.get('all_colors', []),
+                    page_reference={
+                        'file_path': product_data.get('source_pdf'),
+                        'page_numbers': [product_data.get('page_number')] if product_data.get('page_number') else []
+                    }
                 )
                 self.session.add(product)
             self.session.commit()
@@ -70,20 +72,25 @@ class ProductDB:
             # Start with base query
             db_query = self.session.query(Product)
             
-            # Add search conditions
+            # Add search conditions if query exists
             if query:
+                # Try to convert query to year if it's a number
+                try:
+                    year_query = int(query)
+                    year_filter = Product.year == year_query
+                except ValueError:
+                    year_filter = False
+
                 search_filter = or_(
                     Product.product_name.ilike(f'%{query}%'),
                     Product.brand_name.ilike(f'%{query}%'),
                     Product.designer.ilike(f'%{query}%'),
-                    Product.type_of_product.ilike(f'%{query}%')
+                    Product.type_of_product.ilike(f'%{query}%'),
+                    Product.all_colors.any(query),
+                    year_filter if year_filter else False
                 )
                 db_query = db_query.filter(search_filter)
             
-            # Add category filter
-            if category:
-                db_query = db_query.filter(Product.type_of_product.ilike(f'%{category}%'))
-                        
             # Execute query and convert results to dict
             products = db_query.all()
             return [self._product_to_dict(p) for p in products]

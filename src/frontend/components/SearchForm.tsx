@@ -24,9 +24,20 @@ export const SearchForm = () => {
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:8080/search?query=${query}`);
-        const data = await response.json();
-        setResults(data);
+        try {
+            const response = await fetch(`http://localhost:8080/search?query=${encodeURIComponent(query)}`);
+            if (!response.ok) {
+                throw new Error('Search failed');
+            }
+            const data = await response.json();
+            setProcessedData(data);
+            if (data.length === 0) {
+                alert('No products found');
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            alert('Error performing search');
+        }
     };
 
     const handleFileUpload = async (e: React.FormEvent) => {
