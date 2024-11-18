@@ -1,108 +1,141 @@
-import pdfplumber
+import fitz  # PyMuPDF
+import google.generativeai as genai
+import json
 import re
 from typing import Dict, List, Optional
+import logging
+
+logger = logging.getLogger(__name__)
 
 class PDFProcessor:
-    # Added Italian furniture types
-    FURNITURE_TYPES = [
-        # Italian terms
-        'divano', 'sedia', 'tavolo', 'letto', 'armadio', 'cassettiera', 'scrivania',
-        'libreria', 'guardaroba', 'poltrona', 'pouf', 'panca', 'sgabello',
-        'credenza', 'consolle', 'comodino', 'scaffale', 'vetrina',
-        # Include English terms as fallback
-        'sofa', 'chair', 'table', 'bed', 'cabinet', 'dresser', 'desk',
-        'bookshelf', 'wardrobe', 'armchair', 'ottoman', 'bench', 'stool'
-    ]
-
-    # Italian dimension indicators
-    DIMENSION_INDICATORS = ['lunghezza', 'larghezza', 'altezza', 'profondità', 'diametro',
-                          'lung', 'larg', 'alt', 'prof', 'diam', 'ø']
-
-    def __init__(self, pdf_path: str):
+    def __init__(self, pdf_path: str, gemini_api_key: str):
         self.pdf_path = pdf_path
+        # Initialize Gemini
+        genai.configure(api_key=gemini_api_key)
+        self.model = genai.GenerativeModel("gemini-1.5-pro-002")
+        self.BATCH_SIZE = 2  # Pages per batch
         
-    def extract_product_info(self):
-        products = []
-        with pdfplumber.open(self.pdf_path) as pdf:
-            for page_num, page in enumerate(pdf.pages):
-                # Extract text
-                text = page.extract_text()
-                
-                # Process and structure the data
-                product_data = self._parse_page_content(text)
-                
-                if product_data:
-                    product_data['page_number'] = page_num + 1
-                    product_data['source_pdf'] = self.pdf_path
-                    products.append(product_data)
-                
-        return products
-    
-    def _parse_page_content(self, text):
-        # Basic implementation for testing
-        return {
-            'id': len(text),  # temporary unique id
-            'name': 'Test Product',
-            'price': '99.99',
-            'dimensions': '10x10',
-            'text_content': text[:100] if text else ''  # first 100 chars of text
-        }
+    def extract_product_info(self) -> List[Dict]:
+        """Main method to process PDF and return structured product data"""
+        # Extract text from PDF
+        extracted_text = self._extract_text_from_pdf()
+        
+        # Process text through LLM in batches
+        all_products = self._process_text_batches(extracted_text)
+        
+        return all_products
 
-    def _parse_product_block(self, text: str) -> Optional[Dict]:
-        product_data = {}
-        
-        # Brand detection remains similar as brands are usually in caps
-        brand_match = re.search(r'^([A-Z][A-Z\s]+)(?:\s|$)', text, re.MULTILINE)
-        if brand_match:
-            product_data['brand'] = brand_match.group(1).strip()
-        
-        # Product type detection in Italian
-        text_lower = text.lower()
-        for furniture_type in self.FURNITURE_TYPES:
-            if furniture_type in text_lower:
-                product_data['type'] = furniture_type
-                break
-        
-        # Modified dimension pattern to match Italian formats
-        # Examples: "L.160 x P.90 x H.75 cm" or "160x90x75 cm" or "Ø120 cm"
-        dim_patterns = [
-            r'(?:L\.?|lung\.?)?\s*(\d+(?:[,.]\d+)?)\s*(?:x|×)\s*(?:P\.?|prof\.?)?\s*(\d+(?:[,.]\d+)?)\s*(?:x|×)\s*(?:H\.?|alt\.?)?\s*(\d+(?:[,.]\d+)?)\s*(?:cm|mm)?',
-            r'Ø\s*(\d+(?:[,.]\d+)?)\s*(?:cm|mm)?',  # For circular items
-            r'(?:diam\.?|diametro)\s*(\d+(?:[,.]\d+)?)\s*(?:cm|mm)?'  # Alternative diameter format
-        ]
-        
-        for pattern in dim_patterns:
-            dim_match = re.search(pattern, text, re.IGNORECASE)
-            if dim_match:
-                if len(dim_match.groups()) == 3:  # LxPxH format
-                    dims = [dim_match.group(1), dim_match.group(2), dim_match.group(3)]
-                    product_data['dimensions'] = 'x'.join(dims)
-                else:  # Diameter format
-                    product_data['dimensions'] = f"Ø{dim_match.group(1)}"
-                break
+    def _extract_text_from_pdf(self) -> Dict[int, str]:
+        """Extract text from PDF using PyMuPDF (fitz)"""
+        extracted_text = {}
+        try:
+            doc = fitz.open(self.pdf_path)
+            for page_num in range(doc.page_count):
+                page = doc[page_num]
+                text = page.get_text()
+                extracted_text[page_num + 1] = text
+            doc.close()
+            return extracted_text
+        except Exception as e:
+            logger.error(f"Error extracting text from PDF: {str(e)}")
+            raise
 
-        # Price pattern adjusted for Euro format (1.234,56 €)
-        def _clean_price(price_str: str) -> Optional[float]:
-            try:
-                # Remove currency symbol and spaces
-                price_str = price_str.replace('€', '').replace(' ', '')
-                # Convert from European format (1.234,56) to standard float format (1234.56)
-                price_str = price_str.replace('.', '').replace(',', '.')
-                return float(price_str)
-            except ValueError:
-                return None
+    def _create_prompt(self, page_texts: List[str], page_numbers: List[int]) -> str:
+        """Create prompt for LLM"""
+        combined_text = "\n".join([f"TEXT FROM PAGE {num}:\n\"{text}\"" 
+                                 for num, text in zip(page_numbers, page_texts)])
+        
+        return f"""
+        The following is text extracted from pages {page_numbers} of a PDF furniture catalog. 
+        It contains information for 1 or more products that the company sells. 
+        Each product can have 1 or more price tables. Extract each product on the page 
+        in the same language (Italian) and output the data as a JSON array, with each 
+        product represented as a JSON object with the attributes listed below:
+        
+        ATTRIBUTES:
+        - product_name: name of the product
+        - brand_name: name of the brand
+        - designer: name of the designer
+        - year: year of manufacture
+        - type_of_product: type of product (e.g., sofa, table, etc.)
+        - all_colors: an array of all colors mentioned for the product
+        - page_reference: an object containing the PDF file path as a string and 
+          the page numbers of the product as an array
 
-    def _find_price_in_tables(self, tables: List[List[List[str]]], product_name: Optional[str]) -> Optional[float]:
-        if not product_name or not tables:
+        {combined_text}
+        """
+
+    def _parse_text_with_gemini(self, page_texts: List[str], 
+                               page_numbers: List[int]) -> Optional[str]:
+        """Send text to Gemini API and get structured response"""
+        try:
+            prompt = self._create_prompt(page_texts, page_numbers)
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.GenerationConfig(
+                    response_mime_type="application/json",
+                )
+            )
+            return response.candidates[0].content.parts[0].text
+        except Exception as e:
+            logger.error(f"Error calling Gemini API: {str(e)}")
+            return None
+
+    def _extract_json_from_response(self, response_text: str) -> Optional[List[Dict]]:
+        """Extract JSON data from LLM response"""
+        json_match = re.search(r'\[\s*{.*}\s*\]', response_text, re.DOTALL)
+        if not json_match:
             return None
             
-        for table in tables:
-            for row in table:
-                row_text = ' '.join(str(cell).lower() for cell in row if cell)
-                if product_name.lower() in row_text:
-                    # Modified price pattern for Euro format
-                    price_match = re.search(r'(\d+(?:\.?\d{3})*(?:,\d{2})?)\s*€', row_text)
-                    if price_match:
-                        price_str = price_match.group(1)
-                        return self._clean_price(price_str)
+        try:
+            return json.loads(json_match.group(0))
+        except json.JSONDecodeError:
+            logger.error("Error decoding JSON from LLM response")
+            return None
+
+    def _process_text_batches(self, extracted_text: Dict[int, str]) -> List[Dict]:
+        """Process extracted text in batches through LLM"""
+        all_products = []
+        page_texts_batch = []
+        page_numbers_batch = []
+
+        for page_num, page_text in extracted_text.items():
+            page_texts_batch.append(page_text)
+            page_numbers_batch.append(page_num)
+
+            if len(page_texts_batch) == self.BATCH_SIZE:
+                products = self._process_batch(page_texts_batch, page_numbers_batch)
+                if products:
+                    all_products.extend(products)
+                page_texts_batch = []
+                page_numbers_batch = []
+
+        # Process remaining pages
+        if page_texts_batch:
+            products = self._process_batch(page_texts_batch, page_numbers_batch)
+            if products:
+                all_products.extend(products)
+
+        return all_products
+
+    def _process_batch(self, page_texts: List[str], page_numbers: List[int]) -> Optional[List[Dict]]:
+        """Process a single batch of pages"""
+        structured_data = self._parse_text_with_gemini(page_texts, page_numbers)
+        if not structured_data:
+            return None
+
+        json_batch_data = self._extract_json_from_response(structured_data)
+        if json_batch_data:
+            for product in json_batch_data:
+                # Only update the file path, preserve the page numbers from LLM
+                if "page_reference" not in product:
+                    # Fallback if LLM didn't provide page numbers
+                    product["page_reference"] = {
+                        "file_path": self.pdf_path,
+                        "page_numbers": [page_numbers[0]]
+                    }
+                else:
+                    # Keep LLM's page numbers, just update the file path
+                    product["page_reference"]["file_path"] = self.pdf_path
+            return json_batch_data
         return None

@@ -47,10 +47,7 @@ class ProductDB:
                     year=product_data.get('year'),
                     type_of_product=product_data.get('type_of_product'),
                     all_colors=product_data.get('all_colors', []),
-                    page_reference={
-                        'file_path': product_data.get('source_pdf'),
-                        'page_numbers': [product_data.get('page_number')] if product_data.get('page_number') else []
-                    }
+                    page_reference=product_data.get('page_reference', {})
                 )
                 self.session.add(product)
             self.session.commit()

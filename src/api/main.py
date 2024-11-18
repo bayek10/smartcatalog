@@ -11,6 +11,8 @@ import tempfile
 import os
 import json
 import logging
+from dotenv import load_dotenv
+import shutil
 
 # Configure logging
 logging.basicConfig(
@@ -18,6 +20,10 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Load environment variables
+load_dotenv()
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -40,7 +46,7 @@ app.add_middleware(
 )
 
 # Create PDF directory (use absolute path for clarity)
-PDF_STORAGE_PATH = "pdfs"  # or "public/pdfs" if you prefer that structure
+PDF_STORAGE_PATH = os.path.abspath("pdfs")
 os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
 
 # Mount the PDF directory
@@ -90,26 +96,43 @@ async def clear_all_products():
 
 @app.post("/upload")
 async def upload_pdf(file: UploadFile = File(...)):
-    # Save uploaded file temporarily
     temp_dir = tempfile.mkdtemp()
     temp_path = os.path.join(temp_dir, file.filename)
     
-    with open(temp_path, "wb") as buffer:
-        content = await file.read()
-        buffer.write(content)
+    try:
+        # Save the uploaded file to temp location
+        with open(temp_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+        
+        # Process PDF
+        processor = PDFProcessor(temp_path, GEMINI_API_KEY)
+        products = processor.extract_product_info()
+        
+        # Save PDF to permanent storage
+        permanent_path = os.path.join(PDF_STORAGE_PATH, file.filename)
+        shutil.copy2(temp_path, permanent_path)  # Copy file to permanent location
+        
+        # Update file paths in products to match URL structure
+        for product in products:
+            if product.get('page_reference'):
+                product['page_reference']['file_path'] = file.filename  # Just filename since URL is /pdfs/filename
+        
+        # Store in database
+        db.add_products(products)
+        
+        return {"message": f"Processed {len(products)} products from {file.filename}"}
     
-    # Process PDF
-    processor = PDFProcessor(temp_path)
-    products = processor.extract_product_info()
+    except Exception as e:
+        logger.error(f"Error processing PDF: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
     
-    # Store in database
-    db.add_products(products)
-    
-    # Cleanup
-    os.remove(temp_path)
-    os.rmdir(temp_dir)
-    
-    return {"message": f"Processed {len(products)} products from {file.filename}"}
+    finally:
+        # Cleanup temp files
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        if os.path.exists(temp_dir):
+            os.rmdir(temp_dir)
 
 @app.post("/import-json")
 async def import_json_data(file: UploadFile = File(...)):

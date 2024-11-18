@@ -18,9 +18,9 @@ type Product = {
 
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-    const [file, setFile] = useState<File | null>(null);
     const [processedData, setProcessedData] = useState([]);
+    const [file, setFile] = useState<File | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -44,15 +44,26 @@ export const SearchForm = () => {
         e.preventDefault();
         if (!file) return;
 
+        setIsUploading(true);
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch('http://localhost:8080/upload', {
-            method: 'POST',
-            body: formData,
-        });
-        const result = await response.json();
-        alert(result.message);
+        try {
+            const response = await fetch('http://localhost:8080/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const result = await response.json();
+            alert(result.message);
+            // Refresh the product list after upload
+            handleViewProcessedData();
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Error uploading PDF');
+        } finally {
+            setIsUploading(false);
+            setFile(null);
+        }
     };
 
     const handleViewProcessedData = async () => {
@@ -104,7 +115,6 @@ export const SearchForm = () => {
             if (response.ok) {
                 // Clear the local state
                 setProcessedData([]);
-                setResults([]);
                 alert('All products deleted successfully');
             } else {
                 const error = await response.json();
@@ -140,7 +150,13 @@ export const SearchForm = () => {
                         accept=".pdf"
                         onChange={(e) => setFile(e.target.files?.[0] || null)}
                     />
-                    <button type="submit" className="primary-button">Upload PDF</button>
+                    <button 
+                        type="submit" 
+                        className="primary-button" 
+                        disabled={isUploading}
+                    >
+                        {isUploading ? 'Processing...' : 'Upload PDF'}
+                    </button>
                 </form>
 
                 <h2>Upload JSON</h2>
@@ -183,26 +199,6 @@ export const SearchForm = () => {
                 </form>
             </div>
             
-            <div className="results-section">
-                {results.length > 0 && (
-                    <div className="results-container">
-                        <h2>Search Results</h2>
-                        <div className="results-grid">
-                            {results.map(product => (
-                                <div key={product.id} className="product-card">
-                                    <h3>{product.name}</h3>
-                                    <p><strong>Price:</strong> {product.price}</p>
-                                    <p><strong>Dimensions:</strong> {product.dimensions}</p>
-                                    <p className="source-info">
-                                        PDF: {product.source_pdf} (Page {product.page_number})
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-            </div>
-
             <div className="processed-section">
                 {processedData.length > 0 && (
                     <div className="table-container">
