@@ -4,15 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import inspect
 from typing import Optional
+from google.cloud import storage
 from .database import ProductDB, db_session
 from .models import Base
 from ..pdf_processor import PDFProcessor
 import tempfile
 import os
-import json
 import logging
 from dotenv import load_dotenv
-import shutil
 
 # Configure logging
 logging.basicConfig(
@@ -24,6 +23,11 @@ logger = logging.getLogger(__name__)
 # Load environment variables
 load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+# Initialize Google Cloud Storage client
+storage_client = storage.Client()
+bucket_name = "smartcatalog-storage"  # Your bucket name
+bucket = storage_client.bucket(bucket_name)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -39,18 +43,17 @@ db = ProductDB()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Frontend URL
+    allow_origins=["https://key-being-442223-h1.web.app"],  # Frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Create PDF directory (use absolute path for clarity)
-PDF_STORAGE_PATH = os.path.abspath("pdfs")
-os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
-
-# Mount the PDF directory
-app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
+# PDF_STORAGE_PATH = os.path.abspath("pdfs")
+# os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
+# # Mount the PDF directory
+# app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
 
 @app.get("/search")
 async def search_products(
@@ -109,23 +112,19 @@ async def upload_pdf(file: UploadFile = File(...)):
         processor = PDFProcessor(temp_path, GEMINI_API_KEY)
         products = processor.extract_product_info()
         
-        # Save PDF to permanent storage
-        permanent_path = os.path.join(PDF_STORAGE_PATH, file.filename)
-        shutil.copy2(temp_path, permanent_path)  # Copy file to permanent location
+        # Upload to Cloud Storage
+        blob = bucket.blob(f"pdfs/{file.filename}")
+        blob.upload_from_filename(temp_path)
         
-        # Update file paths in products to match URL structure
+        # Update file paths in products to use Cloud Storage URL
         for product in products:
             if product.get('page_reference'):
-                product['page_reference']['file_path'] = file.filename  # Just filename since URL is /pdfs/filename
+                product['page_reference']['file_path'] = f"pdfs/{file.filename}"
         
         # Store in database
         db.add_products(products)
         
         return {"message": f"Processed {len(products)} products from {file.filename}"}
-    
-    except Exception as e:
-        logger.error(f"Error processing PDF: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
     
     finally:
         # Cleanup temp files

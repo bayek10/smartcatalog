@@ -16,6 +16,9 @@ type Product = {
     };
 };
 
+const API_URL = 'https://smartcatalog-backend-912504512630.europe-west1.run.app';
+const STORAGE_URL = 'https://storage.googleapis.com/smartcatalog-storage';
+
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
     const [processedData, setProcessedData] = useState([]);
@@ -25,7 +28,7 @@ export const SearchForm = () => {
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/search?query=${encodeURIComponent(query)}`);
+            const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(query)}`);
             if (!response.ok) {
                 throw new Error('Search failed');
             }
@@ -49,7 +52,7 @@ export const SearchForm = () => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('http://localhost:8080/upload', {
+            const response = await fetch(`${API_URL}/upload`, {
                 method: 'POST',
                 body: formData,
             });
@@ -67,7 +70,7 @@ export const SearchForm = () => {
     };
 
     const handleViewProcessedData = async () => {
-        const response = await fetch('http://localhost:8080/debug/products');
+        const response = await fetch(`${API_URL}/debug/products`);
         const data = await response.json();
         setProcessedData(data.products);
     };
@@ -83,7 +86,7 @@ export const SearchForm = () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch('http://localhost:8080/import-json', {
+            const response = await fetch(`${API_URL}/import-json`, {
                 method: 'POST',
                 body: formData,
             });
@@ -100,15 +103,19 @@ export const SearchForm = () => {
             setFile(null);
             // Refresh the processed data view
             handleViewProcessedData();
-        } catch (error) {
+        } catch (error: unknown) {
             console.error('Upload error:', error);
-            alert(`Error uploading JSON: ${error.message}`);
+            if (error instanceof Error) {
+                alert(`Error uploading JSON: ${error.message}`);
+            } else {
+                alert('Error uploading JSON');
+            }
         }
     };
 
     const handleDeleteAllData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/debug/products', {
+            const response = await fetch(`${API_URL}/debug/products`, {
                 method: 'DELETE',
             });
             
@@ -120,8 +127,12 @@ export const SearchForm = () => {
                 const error = await response.json();
                 throw new Error(error.detail || 'Failed to delete products');
             }
-        } catch (error) {
-            alert(`Error deleting products: ${error.message}`);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                alert(`Error deleting products: ${error.message}`);
+            } else {
+                alert('Error deleting products');
+            }
         }
     };
 
@@ -134,10 +145,8 @@ export const SearchForm = () => {
     const getPdfLink = (pageRef: { file_path: string; page_numbers: number[] }) => {
         if (!pageRef || !pageRef.page_numbers || pageRef.page_numbers.length === 0) return '#';
         
-        // Extract just the filename from the full path
-        const fileName = pageRef.file_path.split('/').pop() || '';
-        
-        return `http://localhost:8080/pdfs/${encodeURIComponent(fileName)}#page=${pageRef.page_numbers[0]}`;
+        const fileName = pageRef.file_path;
+        return `${STORAGE_URL}/${fileName}#page=${pageRef.page_numbers[0]}`;
     };
 
     return (
