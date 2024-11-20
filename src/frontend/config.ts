@@ -1,2 +1,2 @@
-export const API_URL = import.meta.env.VITE_API_URL || 'https://smartcatalog-backend-912504512630.europe-west1.run.app';
-export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || 'https://storage.googleapis.com/smartcatalog-storage'; 
+export const API_URL = import.meta.env.VITE_API_URL;
+export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL;

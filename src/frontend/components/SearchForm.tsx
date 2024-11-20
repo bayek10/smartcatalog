@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './SearchForm.css';
 import './ProductTable.css';
+import { API_URL, STORAGE_URL } from '../config';
 
 type Product = {
     id: number;
@@ -16,8 +17,8 @@ type Product = {
     };
 };
 
-const API_URL = 'https://smartcatalog-backend-912504512630.europe-west1.run.app';
-const STORAGE_URL = 'https://storage.googleapis.com/smartcatalog-storage';
+// const API_URL = 'https://smartcatalog-backend-912504512630.europe-west1.run.app';
+// const STORAGE_URL = 'https://storage.googleapis.com/smartcatalog-storage';
 
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
@@ -45,7 +46,10 @@ export const SearchForm = () => {
 
     const handleFileUpload = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!file) return;
+        if (!file) {
+            alert('Please select a file first');
+            return;
+        }
 
         setIsUploading(true);
         const formData = new FormData();

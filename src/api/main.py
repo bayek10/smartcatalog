@@ -7,11 +7,11 @@ from typing import Optional
 from google.cloud import storage
 from .database import ProductDB, db_session
 from .models import Base
+from .config import ALLOW_ORIGINS, BUCKET_NAME, GEMINI_API_KEY, STORAGE_TYPE, PDF_STORAGE_PATH
 from ..pdf_processor import PDFProcessor
 import tempfile
 import os
 import logging
-from dotenv import load_dotenv
 
 # Configure logging
 logging.basicConfig(
@@ -19,15 +19,6 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
-
-# Load environment variables
-load_dotenv()
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-
-# Initialize Google Cloud Storage client
-storage_client = storage.Client()
-bucket_name = "smartcatalog-storage"  # Your bucket name
-bucket = storage_client.bucket(bucket_name)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -43,17 +34,22 @@ db = ProductDB()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://key-being-442223-h1.web.app"],  # Frontend URL
+    allow_origins=ALLOW_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Create PDF directory (use absolute path for clarity)
-# PDF_STORAGE_PATH = os.path.abspath("pdfs")
-# os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
-# # Mount the PDF directory
-# app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
+# Initialize Google Cloud Storage client
+storage_client = None
+bucket = None
+if STORAGE_TYPE == 'cloud':
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(BUCKET_NAME)
+if STORAGE_TYPE == 'local':
+    # Mount the PDF directory
+    os.makedirs(PDF_STORAGE_PATH, exist_ok=True)
+    app.mount("/pdfs", StaticFiles(directory=PDF_STORAGE_PATH), name="pdfs")
 
 @app.get("/search")
 async def search_products(
@@ -112,14 +108,22 @@ async def upload_pdf(file: UploadFile = File(...)):
         processor = PDFProcessor(temp_path, GEMINI_API_KEY)
         products = processor.extract_product_info()
         
-        # Upload to Cloud Storage
-        blob = bucket.blob(f"pdfs/{file.filename}")
-        blob.upload_from_filename(temp_path)
-        
-        # Update file paths in products to use Cloud Storage URL
-        for product in products:
-            if product.get('page_reference'):
-                product['page_reference']['file_path'] = f"pdfs/{file.filename}"
+        if STORAGE_TYPE == 'local':
+            # Move to local storage
+            final_path = os.path.join(PDF_STORAGE_PATH, file.filename)
+            os.rename(temp_path, final_path)
+            # Update file paths in products
+            for product in products:
+                if product.get('page_reference'):
+                    product['page_reference']['file_path'] = file.filename
+        else:
+            # Upload to Cloud Storage
+            blob = bucket.blob(f"pdfs/{file.filename}")
+            blob.upload_from_filename(temp_path)
+            # Update file paths in products
+            for product in products:
+                if product.get('page_reference'):
+                    product['page_reference']['file_path'] = f"pdfs/{file.filename}"
         
         # Store in database
         db.add_products(products)
