@@ -151,67 +151,94 @@ export const SearchForm = () => {
 
     return (
         <div className="container">
+            <div className="instructions-panel">
+                <h2>How it works</h2>
+                <ol className="steps-list">
+                    <li>Upload your PDF catalog using the form below</li>
+                    <li>Wait for the system to process your document</li>
+                    <li>Search through your products or view the complete catalog</li>
+                </ol>
+            </div>
+
             <div className="upload-section">
-                <h2>Upload PDF</h2>
-                <form onSubmit={handleFileUpload} className="upload-form">
-                    <input 
-                        type="file"
-                        accept=".pdf"
-                        onChange={(e) => setFile(e.target.files?.[0] || null)}
-                    />
-                    <button 
-                        type="submit" 
-                        className="primary-button" 
-                        disabled={isUploading}
-                    >
-                        {isUploading ? 'Processing...' : 'Upload PDF'}
-                    </button>
-                </form>
+                <h2>Step 1: Upload Your Catalog</h2>
+                <div className="upload-options">
+                    <div className="upload-option">
+                        <h3>PDF Upload</h3>
+                        <p className="helper-text">Upload your product catalog in PDF format</p>
+                        <form onSubmit={handleFileUpload} className="upload-form">
+                            <input 
+                                type="file"
+                                accept=".pdf"
+                                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                className="file-input"
+                            />
+                            <button 
+                                type="submit" 
+                                className="primary-button" 
+                                disabled={isUploading}
+                            >
+                                {isUploading ? 'Processing...' : 'Process Catalog'}
+                            </button>
+                        </form>
+                    </div>
 
-                <h2>Upload JSON</h2>
-                <form onSubmit={handleJsonUpload} className="upload-form">
-                    <input 
-                        type="file"
-                        accept=".json"
-                        onChange={(e) => setFile(e.target.files?.[0] || null)}
-                    />
-                    <button type="submit" className="primary-button">Import JSON</button>
-                </form>
-
-                <div className="data-controls">
-                    <button 
-                        onClick={handleViewProcessedData} 
-                        className="secondary-button"
-                    >
-                        View Products
-                    </button>
-                    <button 
-                        onClick={handleDeleteAllData} 
-                        className="danger-button"
-                    >
-                        Delete All Data
-                    </button>
+                    <div className="upload-option">
+                        <h3>JSON Import</h3>
+                        <p className="helper-text">Already have product data? Import it directly</p>
+                        <form onSubmit={handleJsonUpload} className="upload-form">
+                            <input 
+                                type="file"
+                                accept=".json"
+                                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                className="file-input"
+                            />
+                            <button type="submit" className="primary-button">Import Data</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
             <div className="search-section">
-                <h2>Search Products</h2>
+                <h2>Step 2: Search Your Products</h2>
+                <p className="helper-text">Search by product name, brand, designer, or any other detail</p>
                 <form onSubmit={handleSearch} className="search-form">
                     <input 
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search products..."
+                        placeholder="Type to search products..."
                         className="search-input"
                     />
                     <button type="submit" className="primary-button">Search</button>
                 </form>
+                
+                <div className="view-options">
+                    <button 
+                        onClick={handleViewProcessedData} 
+                        className="secondary-button"
+                    >
+                        View All Products
+                    </button>
+                    <button     
+                        onClick={handleDeleteAllData} 
+                        className="danger-button"
+                        title="Remove all products from the catalog"
+                    >
+                        Clear Catalog
+                    </button>
+                </div>
             </div>
             
             <div className="processed-section">
                 {processedData.length > 0 && (
                     <div className="table-container">
                         <h2>Product Catalog</h2>
+                        <div className="table-header">
+                            <p className="product-count">
+                                {processedData.length} product{processedData.length !== 1 ? 's' : ''} found
+                            </p>
+                        </div>
                         <table className="product-table">
                             <thead>
                                 <tr>
