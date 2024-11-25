@@ -24,7 +24,7 @@ STORAGE_TYPE = os.getenv('STORAGE_TYPE', 'local')
 ALLOW_ORIGINS = (
     ["http://localhost:5173", "http://localhost:4173"]
     if STORAGE_TYPE == 'local'
-    else ["https://key-being-442223-h1.web.app"]
+    else ["https://key-being-442223-h1.web.app", "https://www.thesmartcatalog.com"]
 )
 
 # Database URL construction

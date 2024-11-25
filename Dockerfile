@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application
 COPY . .
 
+RUN echo "Listing contents of /app/src/api:"
+RUN ls -la src/api/
+
 # Rename prod.env to .env.production at runtime
 RUN mv src/api/prod.env src/api/.env.production
 

@@ -1,0 +1,30 @@
+# Google Cloud specific
+.gcloudignore
+.git
+.gitignore
+
+# Include the gitignore patterns but explicitly allow prod.env
+#!include:.gitignore
+!src/api/prod.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+venv/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log 
