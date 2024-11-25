@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SearchForm.css';
 import './ProductTable.css';
 import { API_URL, STORAGE_URL } from '../config';
+import { Tabs } from './Tabs';
 
 type Product = {
     id: number;
@@ -17,14 +18,21 @@ type Product = {
     };
 };
 
-// const API_URL = 'https://smartcatalog-backend-912504512630.europe-west1.run.app';
-// const STORAGE_URL = 'https://storage.googleapis.com/smartcatalog-storage';
 
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
     const [processedData, setProcessedData] = useState([]);
     const [file, setFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [activeTab, setActiveTab] = useState('upload');
+    const [boqFile, setBoqFile] = useState<File | null>(null);
+    const [boqResults, setBoqResults] = useState<Array<{
+        boqItem: any;
+        matches: Product[];
+        selectedMatch?: Product;
+    }>>([]);
+    const [isProcessingBoq, setIsProcessingBoq] = useState(false);
+    const [boqText, setBoqText] = useState<string>('');
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -159,19 +167,100 @@ export const SearchForm = () => {
         return `${STORAGE_URL}/${fileName}#page=${pageRef.page_numbers[0]}`;
     };
 
-    return (
-        <div className="container">
+    const handleBoqUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!boqFile) {
+            alert('Please select a BOQ file first');
+            return;
+        }
+
+        setIsProcessingBoq(true);
+        const formData = new FormData();
+        formData.append('file', boqFile);
+
+        try {
+            const response = await fetch(`${API_URL}/process-boq`, {
+                method: 'POST',
+                body: formData,
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'BOQ processing failed');
+            }
+            
+            const results = await response.json();
+            setBoqResults(results);
+        } catch (error) {
+            console.error('BOQ processing error:', error);
+            alert(`Error processing BOQ: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        } finally {
+            setIsProcessingBoq(false);
+            setBoqFile(null);
+        }
+    };
+
+    const handleBoqTextProcess = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!boqText.trim()) {
+            alert('Please enter some products to match');
+            return;
+        }
+
+        setIsProcessingBoq(true);
+        try {
+            // Convert text input to structured data
+            const items = boqText.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0)
+                .map(line => {
+                    const [name, brand, type] = line.split(',').map(s => s.trim());
+                    if (!name || !brand || !type) {
+                        throw new Error('Each line must contain product name, brand name, and product type separated by commas');
+                    }
+                    return { name, brand, type };
+                });
+
+            const response = await fetch(`${API_URL}/process-boq-text`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ items }),
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'BOQ processing failed');
+            }
+            
+            const results = await response.json();
+            setBoqResults(results);
+            
+            if (results.some(result => result.matches.length === 0)) {
+                alert('Some items had no matches. Please check the results carefully.');
+            }
+        } catch (error) {
+            console.error('BOQ processing error:', error);
+            alert(`Error processing BOQ: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        } finally {
+            setIsProcessingBoq(false);
+        }
+    };
+
+    const renderUploadTab = () => (
+        <>
             <div className="instructions-panel">
                 <h2>How it works</h2>
                 <ol className="steps-list">
-                    <li>Upload your PDF catalog using the form below</li>
+                    <li>Upload your catalog or price list (in PDF form) using the form below</li>
                     <li>Wait for the system to process your document</li>
-                    <li>Search through your products or view the complete catalog</li>
+                    <li>Switch to the Product List tab to explore your catalog</li>
                 </ol>
             </div>
 
             <div className="upload-section">
-                <h2>Step 1: Upload Your Catalog</h2>
+                <h2>Upload Your Catalog</h2>
                 <div className="upload-options">
                     <div className="upload-option">
                         <h3>PDF Upload</h3>
@@ -208,9 +297,13 @@ export const SearchForm = () => {
                     </div>
                 </div>
             </div>
+        </>
+    );
 
+    const renderSearchTab = () => (
+        <>
             <div className="search-section">
-                <h2>Step 2: Search Your Products</h2>
+                <h2>Search Your Products</h2>
                 <p className="helper-text">Search by product name, brand, designer, or any other detail</p>
                 <form onSubmit={handleSearch} className="search-form">
                     <input 
@@ -279,7 +372,7 @@ export const SearchForm = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
-                                                    View PDF
+                                                    View Page
                                                 </a>
                                             )}
                                         </td>
@@ -290,6 +383,146 @@ export const SearchForm = () => {
                     </div>
                 )}
             </div>
+        </>
+    );
+
+    const renderBoqTab = () => (
+        <>
+            <div className="instructions-panel">
+                <h2>Match BOQ Items</h2>
+                <ol className="steps-list">
+                    <li>Upload a BOQ file or enter products manually below</li>
+                    <li>The system will match each item to products in the database</li>
+                    <li>Review matches and find pricing in the referenced catalogs</li>
+                </ol>
+            </div>
+
+            <div className="boq-input-options">
+                <div className="boq-input-option disabled">
+                    <div className="coming-soon-overlay">
+                        <span>Coming Soon</span>
+                    </div>
+                    <h3>Upload BOQ File</h3>
+                    <p className="helper-text">Upload your Bill of Quantities file (as Excel, CSV, or JSON file)</p>
+                    <form onSubmit={handleBoqUpload} className="upload-form">
+                        <input 
+                            type="file"
+                            accept=".xlsx,.xls,.csv,.json"
+                            onChange={(e) => setBoqFile(e.target.files?.[0] || null)}
+                            className="file-input"
+                            disabled
+                        />
+                        <button 
+                            type="submit" 
+                            className="primary-button" 
+                            // disabled={isProcessingBoq}
+                            disabled
+                        >
+                            {/* {isProcessingBoq ? 'Processing...' : 'Process BOQ'} */}
+                            Process BOQ
+                        </button>
+                    </form>
+                </div>
+
+                <div className="boq-input-option">
+                    <h3>Enter Products Manually</h3>
+                    <p className="helper-text">
+                        Enter one product per line in the format:<br/>
+                        <code>product name, brand name, product type</code>
+                    </p>
+                    <form onSubmit={handleBoqTextProcess} className="text-input-form">
+                        <textarea
+                            value={boqText}
+                            onChange={(e) => setBoqText(e.target.value)}
+                            placeholder="Example:
+Butterfly Keramik, Cattelan Italia, tavolo
+Pattie, Minotti, poltrona"
+                            className="boq-text-input"
+                            rows={6}
+                        />
+                        <button 
+                            type="submit" 
+                            className="primary-button"
+                            disabled={isProcessingBoq}
+                        >
+                            {isProcessingBoq ? 'Processing...' : 'Process Items'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {boqResults.length > 0 && (
+                <div className="boq-results">
+                    <h2>BOQ Matching Results</h2>
+                    <table className="product-table">
+                        <thead>
+                            <tr>
+                                <th>BOQ Item</th>
+                                <th>Matched Product</th>
+                                <th>Reference Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {boqResults.map((result, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <div className="boq-item-details">
+                                            <strong>{result.boqItem.name}</strong>
+                                            <small>
+                                                {result.boqItem.brand && `Brand: ${result.boqItem.brand}`}<br/>
+                                                {result.boqItem.type && `Type: ${result.boqItem.type}`}
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {result.matches.length > 0 ? (
+                                            <select 
+                                                value={result.selectedMatch?.id || ''}
+                                                onChange={(e) => {
+                                                    const match = result.matches.find(m => m.id === Number(e.target.value));
+                                                    const newResults = [...boqResults];
+                                                    newResults[index].selectedMatch = match;
+                                                    setBoqResults(newResults);
+                                                }}
+                                            >
+                                                {result.matches.map(match => (
+                                                    <option key={match.id} value={match.id}>
+                                                        {match.product_name} ({match.brand_name})
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            <span className="no-matches">No matches found</span>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {result.selectedMatch?.page_reference && (
+                                            <a 
+                                                href={getPdfLink(result.selectedMatch.page_reference)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="view-catalog-link"
+                                            >
+                                                View in Catalog
+                                            </a>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </>
+    );
+
+    return (
+        <div className="container">
+            <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
+            
+            {activeTab === 'upload' && renderUploadTab()}
+            {activeTab === 'search' && renderSearchTab()}
+            {activeTab === 'boq' && renderBoqTab()}
         </div>
     );
 }; 

@@ -160,17 +160,15 @@
     margin-top: 1rem;
 }
 
-.product-table th {
-    background: var(--background-light);
+.product-table th, .product-table td {
     padding: 0.75rem;
     text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.product-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
+.product-table th {
+    background: var(--background-light);
+    font-weight: 600;
 }
 
 .product-table tr:hover {
@@ -200,4 +198,102 @@
     background: var(--background-light);
     border-radius: 4px;
     display: inline-block;
+}
+
+.boq-input-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.boq-input-option {
+    background: var(--background-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.boq-input-option h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.boq-text-input {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: vertical;
+}
+
+.text-input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.helper-text code {
+    background: var(--background-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.boq-input-option.disabled {
+    position: relative;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.coming-soon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.coming-soon-overlay span {
+    background: gray;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transform: rotate(-10deg);
+}
+
+.boq-input-option.disabled input,
+.boq-input-option.disabled button {
+    pointer-events: none;
+}
+
+.boq-item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.no-matches {
+    color: var(--danger-color);
+    font-weight: bold;
+}
+
+.view-catalog-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.view-catalog-link:hover {
+    text-decoration: underline;
 } 

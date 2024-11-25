@@ -3,16 +3,17 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import inspect
-from typing import Optional
+from typing import Optional, List
 from google.cloud import storage
-from .database import ProductDB, db_session
-from .models import Base
-from .config import ALLOW_ORIGINS, BUCKET_NAME, GEMINI_API_KEY, STORAGE_TYPE, PDF_STORAGE_PATH
-from ..pdf_processor import PDFProcessor
+from pydantic import BaseModel
 import tempfile
 import os
 import logging
 import shutil
+from .database import ProductDB, db_session
+from .models import Base, Product
+from .config import ALLOW_ORIGINS, BUCKET_NAME, GEMINI_API_KEY, STORAGE_TYPE, PDF_STORAGE_PATH
+from ..pdf_processor import PDFProcessor
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +21,14 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+class BOQItem(BaseModel):
+    name: str
+    brand: str
+    type: str
+
+class BOQRequest(BaseModel):
+    items: List[BOQItem]
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -243,4 +252,49 @@ async def get_table_info():
         return {"tables": tables}
     except Exception as e:
         logger.error(f"Error getting table info: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/process-boq-text")
+async def process_boq_text(request: BOQRequest):
+    """Process BOQ items and find matches in the database"""
+    try:
+        logger.info(f"Processing {len(request.items)} BOQ items")
+        results = []
+        
+        for item in request.items:
+            # Basic matching logic: search for products that match any of the criteria
+            matches = db.session.query(Product).filter(
+                (Product.product_name.ilike(item.name)) &  # Exact match for product name
+                (Product.brand_name.ilike(f"%{item.brand}%")) &  # Partial match for brand
+                (Product.type_of_product.ilike(f"%{item.type}%"))  # Partial match for type
+            ).all()
+            
+            # Convert matches to dictionary format
+            matches_dict = [{
+                'id': match.id,
+                'product_name': match.product_name,
+                'brand_name': match.brand_name,
+                'designer': match.designer,
+                'year': match.year,
+                'type_of_product': match.type_of_product,
+                'all_colors': match.all_colors,
+                'page_reference': match.page_reference
+            } for match in matches]
+            
+            results.append({
+                'boqItem': {
+                    'name': item.name,
+                    'brand': item.brand,
+                    'type': item.type
+                },
+                'matches': matches_dict,
+                'selectedMatch': matches_dict[0] if matches_dict else None
+            })
+            
+            logger.info(f"Found {len(matches_dict)} matches for item: {item.name}")
+        
+        return results
+        
+    except Exception as e:
+        logger.error(f"Error processing BOQ text: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
