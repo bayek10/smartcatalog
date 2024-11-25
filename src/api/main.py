@@ -12,6 +12,7 @@ from ..pdf_processor import PDFProcessor
 import tempfile
 import os
 import logging
+import shutil
 
 # Configure logging
 logging.basicConfig(
@@ -99,25 +100,43 @@ async def upload_pdf(file: UploadFile = File(...)):
     temp_path = os.path.join(temp_dir, file.filename)
     
     try:
+        # Log the start of processing
+        logger.info(f"Starting upload process for file: {file.filename}")
+        
         # Save the uploaded file to temp location
         with open(temp_path, "wb") as buffer:
             content = await file.read()
             buffer.write(content)
         
+        logger.info(f"File saved to temp location: {temp_path}")
+        
         # Process PDF
         processor = PDFProcessor(temp_path, GEMINI_API_KEY)
+        logger.info("Starting PDF processing")
         products = processor.extract_product_info()
+        logger.info(f"Extracted {len(products)} products")
         
         if STORAGE_TYPE == 'local':
             # Move to local storage
             final_path = os.path.join(PDF_STORAGE_PATH, file.filename)
-            os.rename(temp_path, final_path)
+            logger.info(f"Moving file to: {final_path}")
+            
+            # Remove existing file if it exists
+            if os.path.exists(final_path):
+                logger.info(f"Removing existing file: {final_path}")
+                os.remove(final_path)
+            
+            # Use shutil.copy2 instead of os.rename
+            shutil.copy2(temp_path, final_path)
+            logger.info("File moved successfully")
+            
             # Update file paths in products
             for product in products:
                 if product.get('page_reference'):
                     product['page_reference']['file_path'] = file.filename
         else:
-            # Upload to Cloud Storage
+            # Cloud storage logic...
+            logger.info("Using cloud storage")
             blob = bucket.blob(f"pdfs/{file.filename}")
             blob.upload_from_filename(temp_path)
             # Update file paths in products
@@ -126,16 +145,25 @@ async def upload_pdf(file: UploadFile = File(...)):
                     product['page_reference']['file_path'] = f"pdfs/{file.filename}"
         
         # Store in database
+        logger.info("Storing products in database")
         db.add_products(products)
         
         return {"message": f"Processed {len(products)} products from {file.filename}"}
     
+    except Exception as e:
+        logger.error(f"Error processing upload: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+    
     finally:
         # Cleanup temp files
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-        if os.path.exists(temp_dir):
-            os.rmdir(temp_dir)
+        try:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            if os.path.exists(temp_dir):
+                os.rmdir(temp_dir)
+            logger.info("Cleaned up temporary files")
+        except Exception as e:
+            logger.error(f"Error cleaning up temp files: {str(e)}")
 
 @app.post("/import-json")
 async def import_json_data(file: UploadFile = File(...)):

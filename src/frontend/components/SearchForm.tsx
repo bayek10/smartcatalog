@@ -60,13 +60,19 @@ export const SearchForm = () => {
                 method: 'POST',
                 body: formData,
             });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Upload failed');
+            }
+            
             const result = await response.json();
             alert(result.message);
             // Refresh the product list after upload
             handleViewProcessedData();
         } catch (error) {
-            console.error('Upload error:', error);
-            alert('Error uploading PDF');
+            console.error('Upload error details:', error);
+            alert(`Error uploading PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
         } finally {
             setIsUploading(false);
             setFile(null);
