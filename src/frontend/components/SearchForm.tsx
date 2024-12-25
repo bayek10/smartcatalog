@@ -18,6 +18,12 @@ type Product = {
     };
 };
 
+// Define the type for the elements of boqResults
+type BoqResult = {
+    boqItem: any;
+    matches: Product[];
+    selectedMatch?: Product;
+};
 
 export const SearchForm = () => {
     const [query, setQuery] = useState('');
@@ -237,7 +243,7 @@ export const SearchForm = () => {
             const results = await response.json();
             setBoqResults(results);
             
-            if (results.some(result => result.matches.length === 0)) {
+            if (results.some((result: BoqResult) => result.matches.length === 0)) {
                 alert('Some items had no matches. Please check the results carefully.');
             }
         } catch (error) {
