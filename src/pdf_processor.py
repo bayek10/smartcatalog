@@ -139,3 +139,14 @@ class PDFProcessor:
                     product["page_reference"]["file_path"] = self.pdf_path
             return json_batch_data
         return None
+    
+if __name__ == "__main__":
+    pdf = "..\pdfs\Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf"
+    doc = fitz.open(pdf)
+    print(doc.page_count)
+
+    # processor = PDFProcessor(
+    #     pdf_path="path/to/your/test.pdf",
+    #     gemini_api_key=os.getenv('GEMINI_API_KEY')
+    # )
+
