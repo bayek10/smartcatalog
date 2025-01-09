@@ -1,0 +1,98 @@
+{
+    "results": [
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "220V",
+            "Dimensions_CM": "S1 ø62x66h",
+            "Dimensions_INCHES": "ø24³/₈x26h",
+            "M3": "0,33",
+            "Colli": "1",
+            "EUR": "764"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "110V",
+            "Dimensions_CM": "S1 ø62x66h",
+            "Dimensions_INCHES": "ø24³/₈x26h",
+            "M3": "0,33",
+            "Colli": "1",
+            "EUR": "787"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "220V",
+            "Dimensions_CM": "S2 ø82x73h",
+            "Dimensions_INCHES": "ø32¹/₄x28³/₄h",
+            "M3": "0,67",
+            "Colli": "1",
+            "EUR": "1.313"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "110V",
+            "Dimensions_CM": "S2 ø82x73h",
+            "Dimensions_INCHES": "ø32¹/₄x28³/₄h",
+            "M3": "0,67",
+            "Colli": "1",
+            "EUR": "1.351"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "220V",
+            "Dimensions_CM": "P1 ø62x138h",
+            "Dimensions_INCHES": "ø24³/₈x54³/₈h",
+            "M3": "0,74",
+            "Colli": "1",
+            "EUR": "1.082"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "110V",
+            "Dimensions_CM": "P1 ø62x138h",
+            "Dimensions_INCHES": "ø24³/₈x54³/₈h",
+            "M3": "0,74",
+            "Colli": "1",
+            "EUR": "1.112"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "220V",
+            "Dimensions_CM": "P2 ø82x149h",
+            "Dimensions_INCHES": "ø32¹/₄x58⁵/₈h",
+            "M3": "1,34",
+            "Colli": "1",
+            "EUR": "1.455"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "110V",
+            "Dimensions_CM": "P2 ø82x149h",
+            "Dimensions_INCHES": "ø32¹/₄x58⁵/₈h",
+            "M3": "1,34",
+            "Colli": "1",
+            "EUR": "1.500"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "220V",
+            "Dimensions_CM": "Cavo aggiuntivo 1 mt versione S",
+            "EUR": "17"
+        },
+        {
+            "Struttura": "OP17 / Nichel",
+            "Rivestimento": "Avorio / Marrone / Nero",
+            "Impianto": "110V",
+            "Dimensions_CM": "Cavo aggiuntivo 1 mt versione S",
+            "EUR": "39"
+        }
+    ]
+}

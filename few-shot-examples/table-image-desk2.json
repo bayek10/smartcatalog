@@ -1,0 +1,40 @@
+{
+    "results": [
+        {
+            "Top": "NC / RB",
+            "Base": "GFM69 / GFM73 - 06",
+            "Dimensions_CM": "B 250x128x75h",
+            "Dimensions_INCHES": "98³/₈x50³/₈x29¹/₂h",
+            "M3": "1,05",
+            "Colli": "3",
+            "EUR": "3.570"
+        },
+        {
+            "Top": "NC / RB",
+            "Base": "GFM11 / GFM18 - 06",
+            "Dimensions_CM": "B 250x128x75h",
+            "Dimensions_INCHES": "98³/₈x50³/₈x29¹/₂h",
+            "M3": "1,05",
+            "Colli": "3",
+            "EUR": "3.589"
+        },
+        {
+            "Top": "NC / RB",
+            "Base": "GFM69 / GFM73 - 06",
+            "Dimensions_CM": "B 300x128x75h",
+            "Dimensions_INCHES": "118¹/₈x50³/₈x29¹/₂h",
+            "M3": "1,13",
+            "Colli": "4",
+            "EUR": "3.719"
+        },
+        {
+            "Top": "NC / RB",
+            "Base": "GFM11 / GFM18 - 06",
+            "Dimensions_CM": "B 300x128x75h",
+            "Dimensions_INCHES": "118¹/₈x50³/₈x29¹/₂h",
+            "M3": "1,13",
+            "Colli": "4",
+            "EUR": "3.738"
+        }
+    ]
+}

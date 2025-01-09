@@ -1,0 +1,76 @@
+{
+    "results": [
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Ecopelle / C.O.M.",
+            "Dimensions_CM": "53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,48",
+            "Colli": "2",
+            "EUR": "705"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Tessuto / Synthetic nubuck / Micro nubuck / C.O.L",
+            "Dimensions_CM": "53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,48",
+            "Colli": "2",
+            "EUR": "738"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Pelle",
+            "Dimensions_CM": "53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,48",
+            "Colli": "2",
+            "EUR": "818"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Pelle Glove",
+            "Dimensions_CM": "53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,48",
+            "Colli": "2",
+            "EUR": "858"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Ecopelle / C.O.M.",
+            "Dimensions_CM": "B 53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,36",
+            "Colli": "1",
+            "EUR": "818"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Tessuto / Synthetic nubuck / Micro nubuck / C.O.L",
+            "Dimensions_CM": "B 53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,36",
+            "Colli": "1",
+            "EUR": "871"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Pelle",
+            "Dimensions_CM": "B 53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,36",
+            "Colli": "1",
+            "EUR": "972"
+        },
+        {
+            "Telaio": "frN / frNC / frRB / fr71 / fr73",
+            "Seduta": "Pelle Glove",
+            "Dimensions_CM": "B 53,5x59x86h",
+            "Dimensions_INCHES": "21¹/₈x23¹/₄x33⁷/₈h",
+            "M3": "0,36",
+            "Colli": "1",
+            "EUR": "1.023"
+        }
+    ]
+}
