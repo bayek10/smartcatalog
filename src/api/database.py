@@ -37,23 +37,15 @@ class ProductDB:
     def __init__(self):
         self.session = db_session()
     
-    def add_products(self, products: List[Dict]):
+    def add_products(self, products: List[dict]):
+        """Add products with sequence numbers"""
         try:
-            for product_data in products:
-                product = Product(
-                    product_name=product_data.get('product_name'),
-                    brand_name=product_data.get('brand_name'),
-                    designer=product_data.get('designer'),
-                    year=product_data.get('year'),
-                    type_of_product=product_data.get('type_of_product'),
-                    all_colors=product_data.get('all_colors', []),
-                    page_reference=product_data.get('page_reference', {})
-                )
-                self.session.add(product)
+            product_models = [Product(**product) for product in products]
+            self.session.add_all(product_models)
             self.session.commit()
-        except SQLAlchemyError as e:
+        except Exception as e:
             self.session.rollback()
-            logging.error(f"Error adding products: {str(e)}")
+            logger.error(f"Error adding products: {str(e)}")
             raise
     
     def get_product(self, product_id: int) -> Optional[Dict]:
@@ -113,7 +105,9 @@ class ProductDB:
             'year': product.year,
             'type_of_product': product.type_of_product,
             'all_colors': product.all_colors or [], # Ensure it's never null
-            'page_reference': product.page_reference or {} # Ensure it's never null
+            'page_reference': product.page_reference or {}, # Ensure it's never null
+            'price_data': product.price_data or {},
+            'sequence_number': product.sequence_number
         }
 
     def clear_products(self):
@@ -165,3 +159,71 @@ class ProductDB:
             logging.error(f"Error importing JSON: {str(e)}")
             # Re-raise the exception after rollback
             raise
+
+    def pdf_exists(self, filename: str) -> bool:
+        """Check if any products exist from this PDF"""
+        return self.session.query(Product).filter(
+            Product.page_reference['file_path'].astext == filename
+        ).count() > 0
+    
+    def find_products(self, name: str, brand: str, type: str) -> List[Product]:
+        """Find products matching name, brand and type"""
+        return self.session.query(Product).filter(
+            Product.product_name.ilike(name),
+            Product.brand_name.ilike(f"%{brand}%"),
+            Product.type_of_product.ilike(f"%{type}%")
+        ).all()
+    
+    def get_next_product(self, current_product: Product) -> Optional[Product]:
+        """Get next product in same PDF by sequence number"""
+        return self.session.query(Product).filter(
+            Product.page_reference['file_path'].astext == current_product.page_reference['file_path'],
+            Product.sequence_number == current_product.sequence_number + 1
+        ).first()
+    
+    def update_price_data(self, product_id: int, price_data: dict):
+        """Update price data for a product"""
+        try:
+            product = self.session.query(Product).get(product_id)
+            if product:
+                product.price_data = price_data
+                self.session.commit()
+                logger.info(f"Updated price data for product {product_id}")
+        except Exception as e:
+            self.session.rollback()
+            logger.error(f"Error updating price data: {str(e)}")
+            raise
+
+def reset_database(environment: str = 'local'):
+    " Drop all tables and recreate with new schema. environment = local or cloud "
+    try:
+        logger.info(f"Resetting {environment} database...")
+        print("Resetting database...")
+        
+        # Select database URL based on environment
+        if environment == 'local':
+            db_url = 'postgresql://bayek:userbayek@localhost:5432/pdfmagic'
+        elif environment == 'cloud':
+            # db_url = os.getenv('CLOUD_DATABASE_URL')  # Get from .env file
+            db_url = 'postgresql://postgres:user123@/smartcatalog?host=/cloudsql/key-being-442223-h1:europe-west1:smartcatalog-db'
+        else:
+            raise ValueError(f"Unknown environment: {environment}")
+            
+        engine = create_engine(db_url)
+        
+        # Drop all existing tables
+        Base.metadata.drop_all(engine)
+        logger.info(f"Dropped all existing tables from {environment} database")
+        
+        # Create new tables with updated schema
+        Base.metadata.create_all(engine)
+        logger.info(f"Created new tables in {environment} database")
+        
+    except Exception as e:
+        logger.error(f"Error resetting {environment} database: {str(e)}")
+        raise
+
+if __name__ == "__main__":
+    import sys
+    env = sys.argv[1] if len(sys.argv) > 1 else 'local'
+    reset_database(env)

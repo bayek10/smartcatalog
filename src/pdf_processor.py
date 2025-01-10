@@ -143,7 +143,7 @@ class PDFProcessor:
         - designer: name of the designer
         - year: year of manufacture
         - type_of_product: type of product (e.g., sofa, table, etc.)
-        - all_colors: an array of all colors mentioned for the product with their color codes for example 'KM04', 'GFM11'
+        - all_colors: an array of all colors mentioned for the product with their color codes if available. For example 'bronze (GFM18)', 'Makalu (KM11)'
         - page_reference: an array of the page number(s) that the product is on, in this format - "page_reference": [1, 2]
 
         {combined_text}

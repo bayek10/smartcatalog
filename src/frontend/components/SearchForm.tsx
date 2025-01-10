@@ -16,11 +16,14 @@ type Product = {
         file_path: string;
         page_numbers: number[];
     };
+    price_data: any | null;
 };
 
 // Define the type for the elements of boqResults
 type BoqResult = {
-    boqItem: any;
+    status: 'found' | 'not_found';
+    boqItem: {name: string; brand: string; type: string};
+    message?: string;
     matches: Product[];
     selectedMatch?: Product;
 };
@@ -32,11 +35,7 @@ export const SearchForm = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [activeTab, setActiveTab] = useState('upload');
     const [boqFile, setBoqFile] = useState<File | null>(null);
-    const [boqResults, setBoqResults] = useState<Array<{
-        boqItem: any;
-        matches: Product[];
-        selectedMatch?: Product;
-    }>>([]);
+    const [boqResults, setBoqResults] = useState<BoqResult[]>([]);
     const [isProcessingBoq, setIsProcessingBoq] = useState(false);
     const [boqText, setBoqText] = useState<string>('');
 
@@ -240,10 +239,10 @@ export const SearchForm = () => {
                 throw new Error(errorData.detail || 'BOQ processing failed');
             }
             
-            const results = await response.json();
+            const results: BoqResult[] = await response.json();
             setBoqResults(results);
             
-            if (results.some((result: BoqResult) => result.matches.length === 0)) {
+            if (results.some(result => result.status === 'not_found')) {
                 alert('Some items had no matches. Please check the results carefully.');
             }
         } catch (error) {

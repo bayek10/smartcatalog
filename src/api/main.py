@@ -14,6 +14,7 @@ from .database import ProductDB, db_session
 from .models import Base, Product
 from .config import ALLOW_ORIGINS, BUCKET_NAME, GEMINI_API_KEY, STORAGE_TYPE, PDF_STORAGE_PATH
 from ..pdf_processor import PDFProcessor
+from ..boq_processor import BoQProcessor
 
 # Configure logging
 logging.basicConfig(
@@ -111,6 +112,10 @@ async def upload_pdf(file: UploadFile = File(...)):
     try:
         # Log the start of processing
         logger.info(f"Starting upload process for file: {file.filename}")
+
+        # Check if PDF already exists        
+        if db.pdf_exists(file.filename):
+            raise HTTPException(status_code=400, detail=f"PDF {file.filename} already processed.")
         
         # Save the uploaded file to temp location
         with open(temp_path, "wb") as buffer:
@@ -140,24 +145,28 @@ async def upload_pdf(file: UploadFile = File(...)):
             logger.info("File moved successfully")
             
             # Update file paths in products
-            for product in products:
+            for i, product in enumerate(products, start=1):
                 if product.get('page_reference'):
                     product['page_reference']['file_path'] = file.filename
+                product['price_data'] = None     # Initialize price_data as NULL
+                product['sequence_number'] = i   # Add sequence number so its easy to get next product when finding price tables for curr product
+
         else:
             # Cloud storage logic...
             logger.info("Using cloud storage")
             blob = bucket.blob(f"pdfs/{file.filename}")
             blob.upload_from_filename(temp_path)
             # Update file paths in products
-            for product in products:
+            for i, product in enumerate(products, start=1):
                 if product.get('page_reference'):
                     product['page_reference']['file_path'] = f"pdfs/{file.filename}"
-        
+                product['price_data'] = None     # Initialize price_data as NULL
+                product['sequence_number'] = i   # Add sequence number so its easy to get next product when finding price tables for curr product
+                
         # Store in database
         logger.info("Storing products in database")
-        db.add_products(products)
-        
-        return {"message": f"Processed {len(products)} products from {file.filename}"}
+        db.add_products(products)        
+        return {"message": f"Processed {len(products)} products from {file.filename}", "products_added": len(products)}
     
     except Exception as e:
         logger.error(f"Error processing upload: {str(e)}", exc_info=True)
@@ -262,36 +271,53 @@ async def process_boq_text(request: BOQRequest):
         results = []
         
         for item in request.items:
-            # Basic matching logic: search for products that match any of the criteria
-            matches = db.session.query(Product).filter(
-                (Product.product_name.ilike(item.name)) &  # Exact match for product name
-                (Product.brand_name.ilike(f"%{item.brand}%")) &  # Partial match for brand
-                (Product.type_of_product.ilike(f"%{item.type}%"))  # Partial match for type
-            ).all()
+            # Find matching products
+            matches = db.find_products(name=item.name, brand=item.brand, type=item.type)
             
-            # Convert matches to dictionary format
-            matches_dict = [{
-                'id': match.id,
-                'product_name': match.product_name,
-                'brand_name': match.brand_name,
-                'designer': match.designer,
-                'year': match.year,
-                'type_of_product': match.type_of_product,
-                'all_colors': match.all_colors,
-                'page_reference': match.page_reference
-            } for match in matches]
+            if not matches:
+                results.append({
+                    "status": "not_found",
+                    "boqItem": item.model_dump(),
+                    "message": "No matching products found"
+                })
+                continue
+            
+            matches_with_prices = []
+
+            for product in matches:
+                product_dict = product.__dict__
+                
+                # if product in db doesn't have price data, get it
+                if not product.price_data:
+                    # Find next product using sequence number
+                    next_product = db.get_next_product(product)
+                    boq_processor = BoQProcessor(catalog_dir=PDF_STORAGE_PATH)
+
+                    # boq_result = boq_processor.process_boq_line(
+                    #     f"{product.product_name}, {product.brand_name}, {product.type_of_product}",
+                    #     [product_dict, next_product.__dict__ if next_product else None]
+                    # ) # SO UNNECESSARY & REDUNDANT, GET RID OF PROCESSING IN BOQ_PROCESSOR
+                    
+                    # get price data
+                    boq_result = boq_processor.get_price_data(
+                        current_prod=product_dict, 
+                        next_prod=next_product.__dict__ if next_product else None
+                    )
+                    
+                    if boq_result is not None and boq_result["status"] == "found":
+                        db.update_price_data(product.id, boq_result["price_tables"])
+                        product_dict["price_data"] = boq_result["price_tables"]
+                
+                matches_with_prices.append(product_dict)
             
             results.append({
-                'boqItem': {
-                    'name': item.name,
-                    'brand': item.brand,
-                    'type': item.type
-                },
-                'matches': matches_dict,
-                'selectedMatch': matches_dict[0] if matches_dict else None
+                "status": "found",
+                "boqItem": {"name": item.name, "brand": item.brand, "type": item.type},
+                "matches": matches_with_prices,
+                "selectedMatch": matches_with_prices[0] if matches_with_prices else None
             })
-            
-            logger.info(f"Found {len(matches_dict)} matches for item: {item.name}")
+
+            logger.info(f"Found {len(matches_with_prices)} matches for item: {item.name}")
         
         return results
         

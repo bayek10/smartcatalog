@@ -96,7 +96,6 @@ output:
         with open(image_path, 'rb') as image_file:
             return base64.standard_b64encode(image_file.read()).decode("utf-8")
 
-
     def _build_prompt(self, prompt_image: str) -> List[Dict]:
         """Build the complete messages array for Claude"""
         try:
@@ -198,8 +197,6 @@ output:
         except Exception as e:
             logger.error(f"Error extracting prices: {str(e)}")
             return None
-        
-
 
 if __name__ == "__main__":
     # Load environment variables

@@ -27,7 +27,7 @@ def test_processing():
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
     pdf_path = "..\pdfs\Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf"
     catalog_dir = "..\pdfs"
-    prod_name = "dragon wood, Cattelan Italia, Tavolo"
+    prod_name = "carioca, Cattelan Italia, Tavolo"
 
     # 1. Process PDF and store results
     # pdf_processor = PDFProcessor(pdf_path, GEMINI_API_KEY)
