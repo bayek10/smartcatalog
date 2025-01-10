@@ -1,11 +1,14 @@
 import fitz
 from pathlib import Path
 import google.generativeai as genai
+from price_extractor import PriceExtractor
 import json
 from typing import List, Dict, Optional, Tuple
 import os
 import logging
 from dotenv import load_dotenv
+import tempfile
+from PIL import Image
 import code
 
 logger = logging.getLogger(__name__)
@@ -13,19 +16,6 @@ logger = logging.getLogger(__name__)
 class BoQProcessor:
     def __init__(self, catalog_dir: str):
         self.catalog_dir = catalog_dir
-        # self.gemini_api_key = gemini_api_key
-        # self.processed_catalogs = {}  # Cache for processed PDFs
-        # self.gemini_model = self._setup_gemini(gemini_api_key)
-    
-    # def _setup_gemini(self, api_key: str):
-    #     """Initialize Gemini model"""
-    #     genai.configure(api_key=api_key)
-    #     return genai.GenerativeModel("gemini-1.5-pro-002")
-
-            # STEP 1: Parse BoQ line
-            # STEP 2: Find product in processed data & get y-coord
-            # STEP 3: Find next product in processed data & get y-coord
-            # STEP 4: Get all price tables within those bounds from the actual PDF
 
     def process_boq_line(self, boq_line: str, processed_products: List[Dict]) -> dict:
         """
@@ -36,13 +26,6 @@ class BoQProcessor:
             parsed_data = self._parse_boq_line(boq_line)
             
             # STEP 2: Find product in processed data & get y-coord
-            # result = self._find_product_in_pdfs(parsed_data)
-            # if result is None:
-            #     return {
-            #         "status": "not_found", 
-            #         "message": f"Product {parsed_data['product_name']} not found in any catalog"
-            #     }
-            # pdf_name, page_num, page_text, prod_y_coord = result
             product = self._find_product(parsed_data, processed_products)
             if not product:
                 return {
@@ -52,17 +35,19 @@ class BoQProcessor:
 
             # STEP 3: Find next product in processed data & get y-coord
             next_product = self._find_next_product(product, processed_products)
-            # if not next_product:
-            #     return {
-            #         "status": "not_found",
-            #         "message": f"Next product for {parsed_data['product_name']} not found in database"
-            #     }
             
             # STEP 4: Get all price tables within those bounds from the actual PDF
-            # doc = fitz.open(Path(self.catalog_dir) / product["page_reference"]["file_path"])
             doc = fitz.open(product["page_reference"]["file_path"])
+
             try:
+                # Get table coordinates
                 price_tables = self._get_price_tables(doc, product, next_product)
+                print("\nPRICE TABLES:\n", price_tables)
+
+                # Process each table and extract prices
+                processed_tables = self._process_price_tables(doc, price_tables)
+                print("\nPROCESSED TABLES:\n", len(processed_tables))
+
                 return {
                     "status": "found",
                     "product_info": {
@@ -78,66 +63,91 @@ class BoQProcessor:
                     "available_options": {
                         "colors": product.get("all_colors", []),
                     },
-                    "price_tables": price_tables
+                    "price_tables": processed_tables
                 }
             finally:
                 doc.close()
-
-            # try:
-            #     # STEP 3: Extract product attributes
-            #     all_products_structured = self._extract_product_attributes_gemini(
-            #         page_text, pdf_name, page_num
-            #     )
-            #     product_attributes = all_products_structured[parsed_data["product_name"].upper()]
-                
-            #     ## STEP 4: find all price tables for our product
-            #     # STEP 4A. Get y-coordinate range for product's section
-            #     next_product_info = self._find_next_product_location(
-            #         doc=doc,
-            #         current_page=page_num,
-            #         current_product=parsed_data["product_name"],
-            #         products_on_page=all_products_structured
-            #     )
-                
-            #     # STEP 4B. Get all price tables within those bounds
-            #     price_tables = self._get_product_price_tables(
-            #         doc=doc,
-            #         start_page=page_num,
-            #         end_page=next_product_info["page_num"] if next_product_info else None,
-            #         start_y=prod_y_coord,
-            #         end_y=next_product_info["y_coord"] if next_product_info else None
-            #     )
-
-            #     return {
-            #         "status": "found",
-            #         "product_info": {
-            #             "name": parsed_data["product_name"],
-            #             "brand": parsed_data["brand_name"],
-            #             "type": parsed_data["product_type"],
-            #             "designer": product_attributes["designer"],
-            #             "year": product_attributes["year"],
-            #             "catalog": pdf_name,
-            #             "page": page_num
-            #         },
-            #         "specifications": parsed_data.get("specifications", {}),
-            #         "available_options": {
-            #             "colors": product_attributes["all_colors"],
-            #         },
-            #         "price_tables": price_tables,
-            #         "section_bounds": {
-            #             "start": {"page_num": page_num, "y_coord": prod_y_coord},
-            #             "end": next_product_info if next_product_info else {
-            #                 "page_num": len(doc), 
-            #                 "y_coord": None
-            #             }
-            #         }
-            #     }
-            # finally:
-            #     doc.close()
-
         except Exception as e:
             logger.error(f"Error processing BoQ line: {str(e)}")
             return {"status": "error", "message": str(e)}
+
+    def _process_price_tables(self, doc: fitz.Document, tables: List[dict]) -> List[dict]:
+        """Process each price table and extract pricing data"""
+        load_dotenv("api/.env")
+        price_extractor = PriceExtractor(
+            claude_api_key=os.getenv('ANTHROPIC_API_KEY'),
+            few_shot_examples_dir="../few-shot-examples"
+        )
+        print("PRICE EXTRACTOR INITIALIZED: ", price_extractor)
+
+        processed_tables = []
+
+        for table in tables:
+            temp_file = None
+            try:
+                # Extract table image
+                temp_file = self._extract_table_image(
+                    doc=doc,
+                    page_num=table["page_num"],
+                    bbox=table["bbox"]
+                )
+                code.interact(local=dict(globals(), **locals()))
+                
+                # Extract prices using Claude
+                price_data = price_extractor.extract_prices(temp_file)
+
+                if price_data:
+                    processed_tables.append({
+                        "page_num": table["page_num"],
+                        "bbox": table["bbox"],
+                        "price_data": price_data
+                    })
+                                
+            except Exception as e:
+                logger.error(f"Error processing table: {str(e)}")
+                continue
+            finally:
+                # Clean up temp file with error handling
+                if temp_file and os.path.exists(temp_file):
+                    try:
+                        os.close(os.open(temp_file, os.O_RDONLY))  # Ensure file is closed
+                        os.unlink(temp_file)  # Delete the file
+                    except Exception as e:
+                        logger.warning(f"Could not delete temporary file {temp_file}: {str(e)}")
+        
+        return processed_tables
+    
+    def _extract_table_image(self, doc: fitz.Document, page_num: int, bbox: tuple) -> str:
+        """Extract table region as high-quality image from PDF"""
+        page = doc[page_num-1]
+        
+        # Add padding to bbox to ensure table borders are included
+        padding = 5  # pixels
+        x0, y0, x1, y1 = bbox
+        padded_bbox = fitz.Rect(x0 - padding, y0 - padding, 
+                               x1 + padding, y1 + padding)
+
+        # Get the pixmap of the table region
+        zoom = 4  # Increased from 2 to 4 for higher resolution
+        matrix = fitz.Matrix(zoom, zoom)
+
+        # Get the pixmap withOUT alpha channel (produces transparent background not good for Claude) for better quality
+        pix = page.get_pixmap(matrix=matrix, clip=padded_bbox)
+        
+        # Create temp file path but don't open it
+        temp_dir = os.path.abspath(tempfile.gettempdir())
+        temp_path = os.path.join(temp_dir, f"table_image_{next(tempfile._get_candidate_names())}.png")
+        
+        # Let PyMuPDF create and write the file directly
+        pix.save(temp_path)
+        return temp_path
+        
+        # # Save to temporary file with absolute path
+        # with tempfile.NamedTemporaryFile(delete=False, 
+        #                                suffix='.png', 
+        #                                dir=os.path.abspath(tempfile.gettempdir())) as tmp:
+        #     pix.save(tmp.name)
+        #     return os.path.abspath(tmp.name)  # Return full absolute path
         
     def _parse_boq_line(self, boq_line: str) -> dict:
         """Parse a line from Bill of Quantities into structured data."""
@@ -160,6 +170,90 @@ class BoQProcessor:
                 result["specifications"][key.lower()] = value
                 
         return result
+
+    def _find_product(self, parsed_data: dict, processed_products: List[Dict]) -> Optional[Dict]:
+        """Find exact product match in processed data"""
+        for product in processed_products:
+            if (product["product_name"].upper() == parsed_data["product_name"].upper() and
+                product["brand_name"].upper() == parsed_data["brand_name"].upper()):
+                return product
+        return None
+    
+    def _find_next_product(self, current_product: Dict, processed_products: List[Dict]) -> Optional[Dict]:
+        """Find the next product in sequence"""
+        # Sort products by page and y-coordinate. COULD BE REDUNDANT SINCE ALREADY DONE BY LLM IN ORDER
+        sorted_products = sorted(
+            processed_products,
+            key=lambda p: (int(p["page_reference"]["page_numbers"][0]), p["page_reference"]["y_coord"])
+        )
+        
+        # Find current product's index
+        try:
+            current_idx = sorted_products.index(current_product)
+            if current_idx + 1 < len(sorted_products):
+                return sorted_products[current_idx + 1]
+        except ValueError:
+            pass
+        return None
+   
+    def _get_price_tables(self, doc: fitz.Document, current_product: Dict, next_product: Optional[Dict]) -> List[dict]:
+        """Get all price tables between current product and next product"""
+        tables = []
+        start_page = int(current_product["page_reference"]["page_numbers"][0])
+        end_page = int(next_product["page_reference"]["page_numbers"][0]) if next_product else len(doc)-1
+        start_y = current_product["page_reference"]["y_coord"]
+        end_y = next_product["page_reference"]["y_coord"] if next_product else None
+        
+        for page_num in range(start_page, end_page + 1):
+            page = doc[page_num-1]
+            page_tables = page.find_tables()
+            
+            for table in page_tables:
+                table_bbox = table.bbox
+                
+                # Check if table is within our y-coordinate range
+                if page_num == start_page and table_bbox[1] < start_y:
+                    continue
+                if page_num == end_page and end_y and table_bbox[1] > end_y:
+                    continue
+                    
+                tables.append({
+                    "page_num": page_num,
+                    "bbox": table_bbox,
+                    "content": table
+                })
+        # code.interact(local=dict(globals(), **locals()))
+        return tables
+
+if __name__ == "__main__":
+    load_dotenv("api/.env")
+    
+    # Initialize processor
+    processor = BoQProcessor(
+        catalog_dir="../pdfs/",  # Update this path to your PDF directory
+        gemini_api_key=os.getenv('GEMINI_API_KEY')
+    )
+    
+    # Test processing a BoQ line
+    boq_line = "mad max wood, Cattelan Italia, Tavolo"
+    result = processor.process_boq_line(boq_line)
+    
+    # Print results
+    print("\nProcessing Results:")
+    print("==================")
+    print(f"Status: {result['status']}")
+    if result['status'] == 'found':
+        print("\nProduct Info:")
+        for key, value in result['product_info'].items():
+            print(f"{key}: {value}")
+        print("\nPrice Tables Found:", len(result['price_tables']))
+    else:
+        print("Message:", result['message'])
+
+    code.interact(local=dict(globals(), **locals()))
+
+
+## OLD FUNCTIONS: used when we were not doing the pre-processing of PDFs first before BoQ processing. Saved in case
 
     # def _find_product_in_pdfs(self, parsed_data: dict) -> Optional[Tuple[str, int, str, float]]:
     #     """Find a product in all PDF catalogs in the specified directory."""
@@ -298,85 +392,3 @@ class BoQProcessor:
     #     except Exception as e:
     #         logger.error(f"Error in Gemini API call: {str(e)}")
     #         return None
-
-    def _find_product(self, parsed_data: dict, processed_products: List[Dict]) -> Optional[Dict]:
-        """Find exact product match in processed data"""
-        for product in processed_products:
-            if (product["product_name"].upper() == parsed_data["product_name"].upper() and
-                product["brand_name"].upper() == parsed_data["brand_name"].upper()):
-                return product
-        return None
-    
-    def _find_next_product(self, current_product: Dict, processed_products: List[Dict]) -> Optional[Dict]:
-        """Find the next product in sequence"""
-        # Sort products by page and y-coordinate. COULD BE REDUNDANT SINCE ALREADY DONE BY LLM IN ORDER
-        sorted_products = sorted(
-            processed_products,
-            key=lambda p: (int(p["page_reference"]["page_numbers"][0]), p["page_reference"]["y_coord"])
-        )
-        
-        # Find current product's index
-        try:
-            current_idx = sorted_products.index(current_product)
-            if current_idx + 1 < len(sorted_products):
-                return sorted_products[current_idx + 1]
-        except ValueError:
-            pass
-        return None
-   
-    def _get_price_tables(self, doc: fitz.Document, current_product: Dict, next_product: Optional[Dict]) -> List[dict]:
-        """Get all price tables between current product and next product"""
-        tables = []
-        start_page = int(current_product["page_reference"]["page_numbers"][0])
-        end_page = int(next_product["page_reference"]["page_numbers"][0]) if next_product else len(doc)-1
-        start_y = current_product["page_reference"]["y_coord"]
-        end_y = next_product["page_reference"]["y_coord"] if next_product else None
-        
-        for page_num in range(start_page, end_page + 1):
-            page = doc[page_num-1]
-            page_tables = page.find_tables()
-            
-            for table in page_tables:
-                table_bbox = table.bbox
-                
-                # Check if table is within our y-coordinate range
-                if page_num == start_page and table_bbox[1] < start_y:
-                    continue
-                if page_num == end_page and end_y and table_bbox[1] > end_y:
-                    continue
-                    
-                tables.append({
-                    "page_num": page_num,
-                    "bbox": table_bbox,
-                    "content": table
-                })
-        # code.interact(local=dict(globals(), **locals()))
-        return tables
-
-if __name__ == "__main__":
-    load_dotenv("api/.env")
-    
-    # Initialize processor
-    processor = BoQProcessor(
-        catalog_dir="../pdfs/",  # Update this path to your PDF directory
-        gemini_api_key=os.getenv('GEMINI_API_KEY')
-    )
-    
-    # Test processing a BoQ line
-    boq_line = "mad max wood, Cattelan Italia, Tavolo"
-    result = processor.process_boq_line(boq_line)
-    
-    # Print results
-    print("\nProcessing Results:")
-    print("==================")
-    print(f"Status: {result['status']}")
-    if result['status'] == 'found':
-        print("\nProduct Info:")
-        for key, value in result['product_info'].items():
-            print(f"{key}: {value}")
-        print("\nPrice Tables Found:", len(result['price_tables']))
-    else:
-        print("Message:", result['message'])
-
-    code.interact(local=dict(globals(), **locals()))
-

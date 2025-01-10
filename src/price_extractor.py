@@ -172,18 +172,9 @@ output:
         Returns:
             List of dictionaries containing price information for each combination
         """
-
-        prompt_text = """
-        I want you to parse a furniture pricing table from the image attached and output the data in JSON format.
-        The table describes combinations of attributes, each represented by row and column headers. 
-        
-        Output a JSON array of objects, where each object represents the price for each combination of attributes in the table.
-        Include all combinations and their corresponding prices.
-        """
-
         try:
             messages = self._build_prompt(table_image_path)
-            
+
             response = self.client.messages.create(
                 model="claude-3-5-sonnet-20241022",
                 system=self.system_instruction,
@@ -193,7 +184,8 @@ output:
             )
 
             result = response.content[0].text.strip()
-            
+            # code.interact(local=dict(globals(), **locals()))
+
             # Ensure proper JSON formatting
             if result.startswith("{"):
                 result = "[" + result
