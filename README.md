@@ -30,4 +30,4 @@ Smart Catalog is a tool designed to extract and organize unstructured data from 
 ### **Storage**
 - Google Cloud Storage for storing uploaded PDFs
 
-![Alt text](/src/frontend/public/smartcatalog-screenshot-2.png?raw=true "app screenshot")
+![Alt text](/src/frontend-next/public/smartcatalog-screenshot-3.png?raw=true "app screenshot")
