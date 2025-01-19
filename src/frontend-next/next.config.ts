@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   
   // Optional: Configure domains for next/image if needed
   images: {
-    domains: ['storage.googleapis.com'], // If you're using Google Cloud Storage for images
+    unoptimized: true,
   }
 };
 

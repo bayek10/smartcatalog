@@ -50,6 +50,7 @@ export default function UploadPage() {
       })
 
     } catch (error) {
+      console.error('Upload error:', error)
       toast({
         title: "Error",
         description: "Failed to process PDF",

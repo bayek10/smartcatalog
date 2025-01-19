@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+
 type Product = {
     id: number;
     product_name: string;
@@ -34,7 +35,7 @@ type Product = {
         file_path: string;
         page_numbers: number[];
     };
-    price_data: any | null;
+    price_data: Record<string, number | string | undefined> | null;
 };
 
 

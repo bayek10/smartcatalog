@@ -15,7 +15,8 @@ export default function Home() {
               width={240}
               height={42}
               className="h-10 w-auto"
-            />
+              quality={100}
+              />
           </div>
           <Link href="/login">
             <Button variant="default">Sign in</Button>

@@ -48,6 +48,7 @@ export default function LibraryPage() {
         })
       }
     } catch (error) {
+      console.error('Search error:', error)
       toast({
         title: "Error",
         description: "Failed to search products",
@@ -62,7 +63,8 @@ export default function LibraryPage() {
       const data = await response.json()
       setProducts(data.products)
     } catch (error) {
-      toast({
+        console.error('View all error:', error)
+        toast({
         title: "Error",
         description: "Failed to load products",
         variant: "destructive"
@@ -82,7 +84,8 @@ export default function LibraryPage() {
         description: "Catalog cleared successfully",
       })
     } catch (error) {
-      toast({
+        console.error('Clear catalog error:', error)
+        toast({
         title: "Error",
         description: "Failed to clear catalog",
         variant: "destructive"
