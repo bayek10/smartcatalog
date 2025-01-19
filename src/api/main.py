@@ -292,11 +292,6 @@ async def process_boq_text(request: BOQRequest):
                     # Find next product using sequence number
                     next_product = db.get_next_product(product)
                     boq_processor = BoQProcessor(catalog_dir=PDF_STORAGE_PATH)
-
-                    # boq_result = boq_processor.process_boq_line(
-                    #     f"{product.product_name}, {product.brand_name}, {product.type_of_product}",
-                    #     [product_dict, next_product.__dict__ if next_product else None]
-                    # ) # SO UNNECESSARY & REDUNDANT, GET RID OF PROCESSING IN BOQ_PROCESSOR
                     
                     # get price data
                     boq_result = boq_processor.get_price_data(
