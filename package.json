@@ -1,0 +1,25 @@
+{
+  "name": "smartcatalog",
+  "version": "1.0.0",
+  "description": "Smart Catalog is a tool designed to extract and organize unstructured data from furniture catalog PDFs into structured, searchable products. This allows users to filter, search, and view catalog data efficiently, saving time and effort that would have been spent manually filtering through dozens of PDFs each containing hundreds of pages.",
+  "main": "index.js",
+  "dependencies": {
+    "csstype": "^3.1.3",
+    "js-tokens": "^4.0.0",
+    "loose-envify": "^1.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "scheduler": "^0.23.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:backend": "uvicorn src.api.main:app --reload --port 8080",
+    "build:backend": "gcloud builds submit --tag gcr.io/key-being-442223-h1/backend",
+    "run:backend": "gcloud run deploy smartcatalog-backend --image gcr.io/key-being-442223-h1/backend --platform managed --region europe-west1 --allow-unauthenticated --add-cloudsql-instances key-being-442223-h1:europe-west1:smartcatalog-db --set-env-vars \"ENVIRONMENT=production\" --timeout=30m00s",
+    "deploy:backend": "gcloud builds submit --tag gcr.io/key-being-442223-h1/backend && gcloud run deploy smartcatalog-backend --image gcr.io/key-being-442223-h1/backend --platform managed --region europe-west1 --allow-unauthenticated --add-cloudsql-instances key-being-442223-h1:europe-west1:smartcatalog-db --set-env-vars \"ENVIRONMENT=production\" --timeout=30m00s"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

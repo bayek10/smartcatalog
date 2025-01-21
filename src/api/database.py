@@ -1,9 +1,10 @@
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine, or_, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Dict, Optional
 from .models import Base, Product
 from .config import DATABASE_URL
+from pathlib import Path
 import logging
 import os
 import json
@@ -56,14 +57,20 @@ class ProductDB:
             logging.error(f"Error getting product: {str(e)}")
             raise
     
-    def search(self, query: str, category: Optional[str] = None) -> List[Dict]:
+    def search(self, query: str = None, pdf: str = None) -> List[Dict]:
+        """Search products with optional PDF filter"""
         try:
             # Start with base query
             db_query = self.session.query(Product)
             
+            # Add PDF filter if provided
+            if pdf:
+                db_query = db_query.filter(
+                    Product.page_reference['file_path'].astext == pdf
+                )
+            
             # Add search conditions if query exists
             if query:
-                # Try to convert query to year if it's a number
                 try:
                     year_query = int(query)
                     year_filter = Product.year == year_query
