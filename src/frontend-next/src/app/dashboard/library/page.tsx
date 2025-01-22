@@ -57,6 +57,7 @@ export default function LibraryPage() {
       const response = await fetch(`${API_URL}/debug/products?${searchParams}`)
       const data = await response.json()
       setProducts(data.products)
+      setFilteredProducts(data.products)  // Initialize filteredProducts with all products
     } catch (error) {
       console.error('View all error:', error)
       toast({

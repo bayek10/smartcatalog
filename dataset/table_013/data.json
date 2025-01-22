@@ -1,0 +1,66 @@
+{
+  "table_id": "table_013",
+  "product_name": "BORA BORA",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "0,71",
+      "EUR": "2.944",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø140x75h",
+      "Dimensions_INCHES": "ø55¹/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.369",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø160x75h",
+      "Dimensions_INCHES": "ø63x29¹/₂h"
+    },
+    {
+      "M3": "0,86",
+      "EUR": "3.569",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø180x75h",
+      "Dimensions_INCHES": "ø70⁷/₈x29¹/₂h"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "0,71",
+      "EUR": "2.944",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø140x75h",
+      "Dimensions_INCHES": "ø55¹/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.369",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø160x75h",
+      "Dimensions_INCHES": "ø63x29¹/₂h"
+    },
+    {
+      "M3": "0,86",
+      "EUR": "3.569",
+      "Top": "NC / RB",
+      "Base": "GFM69 / GFM71",
+      "Colli": "2",
+      "Dimensions_CM": "ø180x75h",
+      "Dimensions_INCHES": "ø70⁷/₈x29¹/₂h"
+    }
+  ]
+}

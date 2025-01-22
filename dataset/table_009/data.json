@@ -1,0 +1,124 @@
+{
+  "table_id": "table_009",
+  "product_name": "BUTTERFLY KERAMIK",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "EUR": "5.122",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "5.462",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "5.177",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "5.551",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "6.266",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "6.639",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "6.331",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "6.706",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    }
+  ],
+  "model_output": [
+    {
+      "EUR": "5.122",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "5.462",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "5.177",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "5.551",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "6.266",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "6.639",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "EUR": "6.331",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "EUR": "6.706",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "Brushed Bronze / Brushed Grey",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "table_id": "table_008",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "product_name": "DRAGON WOOD",
+  "product_type": "table",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Dimensions_CM": "M 250x128x76h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.371",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "M 250x128x76h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.403",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Dimensions_CM": "M 300x128x76h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.860",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "M 300x128x76h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.898",
+      "Top": "NC / RB"
+    }
+  ],
+  "model_output": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Dimensions_CM": "M 250x128x76h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.371",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "M 250x128x76h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.403",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Dimensions_CM": "M 300x128x76h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.860",
+      "Top": "NC / RB"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Dimensions_CM": "M 300x128x76h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x29⁷/₈h",
+      "EUR": "4.898",
+      "Top": "NC / RB"
+    }
+  ]
+}

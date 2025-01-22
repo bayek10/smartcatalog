@@ -9,9 +9,9 @@
     "loose-envify": "^1.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-select": "^5.9.0",
     "scheduler": "^0.23.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:backend": "uvicorn src.api.main:app --reload --port 8080",

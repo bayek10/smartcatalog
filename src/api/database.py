@@ -1,12 +1,10 @@
-from sqlalchemy import create_engine, or_, func
+from sqlalchemy import create_engine, or_, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Dict, Optional
 from .models import Base, Product
 from .config import DATABASE_URL
-from pathlib import Path
 import logging
-import os
 import json
 
 logger = logging.getLogger(__name__)
@@ -97,6 +95,7 @@ class ProductDB:
 
     def get_all_products(self) -> List[Dict]:
         try:
+            self.session.execute(text("ROLLBACK")) # Add safety rollback in case of failed sql transactions
             products = self.session.query(Product).all()
             return [self._product_to_dict(p) for p in products]
         except SQLAlchemyError as e:
@@ -200,6 +199,11 @@ class ProductDB:
             self.session.rollback()
             logger.error(f"Error updating price data: {str(e)}")
             raise
+
+
+
+
+
 
 def reset_database(environment: str = 'local'):
     " Drop all tables and recreate with new schema. environment = local or cloud "

@@ -1,30 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "@/lib/utils"
+import type { GroupBase, Props } from 'react-select'
+import ReactSelect from 'react-select'
 import { Button } from "@/components/ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandDialog,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Product, FilterState } from '@/types'
 
 interface ProductFiltersProps {
   products: Product[]
   onFilterApply: (filters: FilterState) => void
 }
+
+type Option = { label: string; value: string }
+
+// Create a properly typed Select component
+const Select = ReactSelect as unknown as <
+  Option,
+  IsMulti extends boolean = false,
+  Group extends GroupBase<Option> = GroupBase<Option>
+>(props: Props<Option, IsMulti, Group>) => JSX.Element
 
 export function ProductFilters({ products, onFilterApply }: ProductFiltersProps) {
   const [filters, setFilters] = useState<FilterState>({
@@ -34,7 +28,6 @@ export function ProductFilters({ products, onFilterApply }: ProductFiltersProps)
     colors: [],
     pdfs: []
   })
-  const [open, setOpen] = useState<{ [key: string]: boolean }>({})
 
   // Extract unique values for each filter
   const uniqueValues = {
@@ -45,104 +38,85 @@ export function ProductFilters({ products, onFilterApply }: ProductFiltersProps)
     pdfs: [...new Set(products.map(p => p.page_reference?.file_path).filter(Boolean))].sort()
   }
 
-  const handleFilterChange = (filterType: keyof FilterState, value: string) => {
-    setFilters(prev => {
-      const newFilters = { ...prev }
-      if (newFilters[filterType].includes(value)) {
-        newFilters[filterType] = newFilters[filterType].filter(v => v !== value)
-      } else {
-        newFilters[filterType] = [...newFilters[filterType], value]
-      }
-      return newFilters
-    })
+  const handleFilterChange = (filterType: keyof FilterState, selected: readonly Option[]) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: selected.map(option => option.value)
+    }))
   }
-
-  const handleApplyFilters = () => {
-    onFilterApply(filters)
-  }
-
-  const handleClearFilters = () => {
-    setFilters({
-      brand_names: [],
-      designers: [],
-      types: [],
-      colors: [],
-      pdfs: []
-    })
-    onFilterApply({
-      brand_names: [],
-      designers: [],
-      types: [],
-      colors: [],
-      pdfs: []
-    })
-  }
-
-  const renderCombobox = (filterType: keyof FilterState, label: string) => (
-    <Popover open={open[filterType]} onOpenChange={(isOpen) => setOpen(prev => ({ ...prev, [filterType]: isOpen }))}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          className="w-[200px] justify-between"
-        >
-          {filters[filterType].length > 0 
-            ? `${label} (${filters[filterType].length})`
-            : label}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder={`Search ${label.toLowerCase()}...`} />
-          <CommandList>
-            <CommandEmpty>No {label.toLowerCase()} found.</CommandEmpty>
-            <CommandGroup>
-              <ScrollArea className="h-[200px]">
-                {uniqueValues[filterType].map((item) => (
-                  <CommandItem
-                    key={item}
-                    value={item}
-                    onSelect={() => handleFilterChange(filterType, item)}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        filters[filterType]?.includes(item) ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {filterType === 'pdfs' ? item.split('/').pop() : item}
-                  </CommandItem>
-                ))}
-              </ScrollArea>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  )
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-4">
-        {renderCombobox('brand_names', 'Brand')}
-        {renderCombobox('designers', 'Designer')}
-        {renderCombobox('types', 'Product Type')}
-        {renderCombobox('colors', 'Color')}
-        {renderCombobox('pdfs', 'PDF Source')}
+        <Select
+          isMulti
+          placeholder="Brand"
+          options={uniqueValues.brand_names.map(b => ({ value: b, label: b }))}
+          value={filters.brand_names.map(b => ({ value: b, label: b }))}
+          onChange={(selected) => handleFilterChange('brand_names', selected as Option[])}
+          className="w-[200px]"
+        />
+        <Select
+          isMulti
+          placeholder="Designer"
+          options={uniqueValues.designers.map(d => ({ value: d, label: d }))}
+          value={filters.designers.map(d => ({ value: d, label: d }))}
+          onChange={(selected) => handleFilterChange('designers', selected as Option[])}
+          className="w-[200px]"
+        />
+        <Select
+          isMulti
+          placeholder="Product Type"
+          options={uniqueValues.types.map(t => ({ value: t, label: t }))}
+          value={filters.types.map(t => ({ value: t, label: t }))}
+          onChange={(selected) => handleFilterChange('types', selected as Option[])}
+          className="w-[200px]"
+        />
+        <Select
+          isMulti
+          placeholder="Color"
+          options={uniqueValues.colors.map(c => ({ value: c, label: c }))}
+          value={filters.colors.map(c => ({ value: c, label: c }))}
+          onChange={(selected) => handleFilterChange('colors', selected as Option[])}
+          className="w-[200px]"
+        />
+        <Select
+          isMulti
+          placeholder="PDF Source"
+          options={uniqueValues.pdfs.map(p => ({ 
+            value: p, 
+            label: p.split('/').pop() || p 
+          }))}
+          value={filters.pdfs.map(p => ({ 
+            value: p, 
+            label: p.split('/').pop() || p 
+          }))}
+          onChange={(selected) => handleFilterChange('pdfs', selected as Option[])}
+          className="w-[200px]"
+        />
       </div>
 
       <div className="flex gap-2">
         <Button 
           variant="secondary" 
-          onClick={handleApplyFilters}
+          onClick={() => onFilterApply(filters)}
           className="bg-primary/10 hover:bg-primary/20"
         >
           Apply Filters
         </Button>
         <Button 
           variant="ghost" 
-          onClick={handleClearFilters}
+          onClick={() => {
+            const emptyFilters = {
+              brand_names: [],
+              designers: [],
+              types: [],
+              colors: [],
+              pdfs: []
+            }
+            setFilters(emptyFilters)
+            onFilterApply(emptyFilters)
+          }}
           size="sm"
         >
           Clear

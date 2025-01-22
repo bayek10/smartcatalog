@@ -1,0 +1,228 @@
+{
+  "table_id": "table_007",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "product_name": "DRAGON WOOD",
+  "product_type": "table",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.219",
+      "M3": "0,74",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.250",
+      "M3": "0,74",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.219",
+      "M3": "0,74",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.250",
+      "M3": "0,74",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.130",
+      "M3": "0,91",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.168",
+      "M3": "0,91",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.130",
+      "M3": "0,91",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.168",
+      "M3": "0,91",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.511",
+      "M3": "1,03",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.550",
+      "M3": "1,03",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.511",
+      "M3": "1,03",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.550",
+      "M3": "1,03",
+      "Top": "OLM73 - Brushed Bronze"
+    }
+  ],
+  "model_output": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.219",
+      "M3": "0,74",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.250",
+      "M3": "0,74",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.219",
+      "M3": "0,74",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 200x120x75h",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x29¹/₂h",
+      "EUR": "3.250",
+      "M3": "0,74",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.130",
+      "M3": "0,91",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.168",
+      "M3": "0,91",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.130",
+      "M3": "0,91",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 250x128x73h",
+      "Dimensions_INCHES": "98³/₈x50³/₈x28³/₄h",
+      "EUR": "4.168",
+      "M3": "0,91",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.511",
+      "M3": "1,03",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.550",
+      "M3": "1,03",
+      "Top": "NC - Brushed Grey"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.511",
+      "M3": "1,03",
+      "Top": "OLM73 - Brushed Bronze"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "C 300x128x73h",
+      "Dimensions_INCHES": "118¹/₈x50³/₈x28³/₄h",
+      "EUR": "4.550",
+      "M3": "1,03",
+      "Top": "OLM73 - Brushed Bronze"
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "table_id": "table_018",
+  "product_name": "ATLANTIS KERAMIK",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "1,10",
+      "EUR": "3.383",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.402",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.518",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.537",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.453",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.472",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.548",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.568",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "1,10",
+      "EUR": "3.383",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.402",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.518",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,10",
+      "EUR": "3.537",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "240x120x75h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.453",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.472",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.548",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    },
+    {
+      "M3": "1,24",
+      "EUR": "4.568",
+      "Top": "KM02 / KM04 / KM05 / KM06 / KM07 / KM08 / KM09 / KM10 / KM11 / KM12 / KM13",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "300x120x75h sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₂h shaped"
+    }
+  ]
+}

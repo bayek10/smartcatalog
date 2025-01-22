@@ -1,0 +1,300 @@
+{
+  "table_id": "table_012",
+  "product_name": "DAYTONA",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "0,62",
+      "EUR": "4.097",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.244",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.540",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.813",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.244",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.389",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.801",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.954",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.287",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.435",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.926",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.076",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.585",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.733",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.401",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.551",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "0,62",
+      "EUR": "4.097",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.244",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.540",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "4.813",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "140-220x80x75h",
+      "Dimensions_INCHES": "55¹/₈-86⁵/₈x31¹/₂x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.244",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.389",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.801",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,65",
+      "EUR": "4.954",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "160-240x90x75h",
+      "Dimensions_INCHES": "63-94¹/₂x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.287",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.435",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.926",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.076",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "180-260x90x75h",
+      "Dimensions_INCHES": "70⁷/₈-102³/₈x35³/₈x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.585",
+      "Top": "Cristallo trasparente",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "4.733",
+      "Top": "Cristallo trasparente",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.401",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "Acciaio inox",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    },
+    {
+      "M3": "0,67",
+      "EUR": "5.551",
+      "Top": "Cristallo trasparente extrachiaro",
+      "Base": "NC",
+      "Colli": "4",
+      "Dimensions_CM": "200-294x106x75h",
+      "Dimensions_INCHES": "78³/₄-115³/₄x41³/₄x29¹/₂h"
+    }
+  ]
+}
