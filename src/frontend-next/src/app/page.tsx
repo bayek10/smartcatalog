@@ -18,9 +18,14 @@ export default function Home() {
               quality={100}
               />
           </div>
-          <Link href="/login">
-            <Button variant="default">Sign in</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/dashboard">
+              <Button variant="ghost">Try Demo</Button>
+            </Link>
+            <Link href="/login">
+              <Button variant="default">Sign in</Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
