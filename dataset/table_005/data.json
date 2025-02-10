@@ -1,0 +1,120 @@
+{
+  "table_id": "table_005",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "product_name": "DRAGON WOOD",
+  "product_type": "table",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 200x100x74h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x29¹/₈h",
+      "EUR": "3.765",
+      "M3": "0,69",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 200x100x74h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x29¹/₈h",
+      "EUR": "3.797",
+      "M3": "0,69",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 240x120x74h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₈h",
+      "EUR": "4.192",
+      "M3": "0,79",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 240x120x74h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₈h",
+      "EUR": "4.224",
+      "M3": "0,79",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 300x120x74h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₈h",
+      "EUR": "4.375",
+      "M3": "0,91",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 300x120x74h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₈h",
+      "EUR": "4.413",
+      "M3": "0,91",
+      "Top": "NC / RB / RN"
+    }
+  ],
+  "model_output": [
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 200x100x74h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x29¹/₈h",
+      "EUR": "3.765",
+      "M3": "0,69",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 200x100x74h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x29¹/₈h",
+      "EUR": "3.797",
+      "M3": "0,69",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 240x120x74h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₈h",
+      "EUR": "4.192",
+      "M3": "0,79",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 240x120x74h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29¹/₈h",
+      "EUR": "4.224",
+      "M3": "0,79",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM69 / GFM73",
+      "Colli": "4",
+      "Dimensions_CM": "S 300x120x74h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₈h",
+      "EUR": "4.375",
+      "M3": "0,91",
+      "Top": "NC / RB / RN"
+    },
+    {
+      "Base": "GFM11 / GFM18",
+      "Colli": "4",
+      "Dimensions_CM": "S 300x120x74h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29¹/₈h",
+      "EUR": "4.413",
+      "M3": "0,91",
+      "Top": "NC / RB / RN"
+    }
+  ]
+}

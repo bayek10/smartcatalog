@@ -14,30 +14,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
-type Product = {
-  id: number;
-  product_name: string;
-  brand_name: string;
-  designer: string;
-  year: number;
-  type_of_product: string;
-  all_colors: string[];
-  page_reference: {
-    file_path: string;
-    page_numbers: number[];
-  };
-};
+import { ProductFilters } from "@/components/ui/product-filters"
+import { Separator } from "@/components/ui/separator"
+import { Product, FilterState } from '@/types'
 
 export default function LibraryPage() {
   const [query, setQuery] = useState('')
   const [products, setProducts] = useState<Product[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const { toast } = useToast()
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(query)}`)
+      const searchParams = new URLSearchParams()
+      if (query) searchParams.append('query', query)
+      
+      const response = await fetch(`${API_URL}/search?${searchParams}`)
       if (!response.ok) throw new Error('Search failed')
       const data = await response.json()
       setProducts(data)
@@ -59,12 +52,15 @@ export default function LibraryPage() {
 
   const handleViewAll = async () => {
     try {
-      const response = await fetch(`${API_URL}/debug/products`)
+      const searchParams = new URLSearchParams()
+      
+      const response = await fetch(`${API_URL}/debug/products?${searchParams}`)
       const data = await response.json()
       setProducts(data.products)
+      setFilteredProducts(data.products)  // Initialize filteredProducts with all products
     } catch (error) {
-        console.error('View all error:', error)
-        toast({
+      console.error('View all error:', error)
+      toast({
         title: "Error",
         description: "Failed to load products",
         variant: "destructive"
@@ -93,6 +89,33 @@ export default function LibraryPage() {
     }
   }
 
+  const handleFilterApply = (filters: FilterState) => {
+    let filtered = [...products]
+
+    // Apply each filter
+    if (filters.brand_names.length > 0) {
+      filtered = filtered.filter(p => filters.brand_names.includes(p.brand_name))
+    }
+    if (filters.designers.length > 0) {
+      filtered = filtered.filter(p => filters.designers.includes(p.designer))
+    }
+    if (filters.types.length > 0) {
+      filtered = filtered.filter(p => filters.types.includes(p.type_of_product))
+    }
+    if (filters.colors.length > 0) {
+      filtered = filtered.filter(p => 
+        p.all_colors?.some(color => filters.colors.includes(color))
+      )
+    }
+    if (filters.pdfs.length > 0) {
+      filtered = filtered.filter(p => 
+        filters.pdfs.includes(p.page_reference?.file_path)
+      )
+    }
+
+    setFilteredProducts(filtered)
+  }
+
   const renderColorsList = (colors: string[]) => {
     if (!colors?.length) return '-'
     const displayColors = colors.slice(0, 3)
@@ -105,12 +128,13 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <Card>
         <CardHeader>
           <CardTitle>Product Library</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+          {/* Search Section */}
           <form onSubmit={handleSearch} className="flex gap-4 mb-6">
             <Input
               value={query}
@@ -121,6 +145,7 @@ export default function LibraryPage() {
             <Button type="submit">Search</Button>
           </form>
 
+          {/* Primary Actions */}
           <div className="flex gap-2 mb-6">
             <Button variant="outline" onClick={handleViewAll}>
               View All Products
@@ -130,52 +155,78 @@ export default function LibraryPage() {
             </Button>
           </div>
 
+          <Separator className="my-4" />
+
           {products.length > 0 && (
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Product Name</TableHead>
-                    <TableHead>Brand</TableHead>
-                    <TableHead>Designer</TableHead>
-                    <TableHead>Year</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Colors</TableHead>
-                    <TableHead>PDF Page</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {products.map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell>{product.product_name || '-'}</TableCell>
-                      <TableCell>{product.brand_name || '-'}</TableCell>
-                      <TableCell>{product.designer || '-'}</TableCell>
-                      <TableCell>{product.year || '-'}</TableCell>
-                      <TableCell>{product.type_of_product || '-'}</TableCell>
-                      <TableCell title={product.all_colors?.join(', ')}>
-                        {renderColorsList(product.all_colors)}
-                      </TableCell>
-                      <TableCell>
-                        {product.page_reference && (
-                          <Button
-                            variant="link"
-                            asChild
-                          >
-                            <a
-                              href={getPdfLink(product.page_reference)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              View Page
-                            </a>
-                          </Button>
-                        )}
-                      </TableCell>
+            <>
+              {/* Filter Section */}
+              <div className="rounded-lg bg-muted/50 p-4 space-y-4">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-medium">Filters</h3>
+                    <span className="text-sm text-muted-foreground">({filteredProducts.length} items)</span>
+                  </div>
+                </div>
+                <ProductFilters 
+                  products={products} 
+                  onFilterApply={handleFilterApply} 
+                />
+              </div>
+              {/* Results Table */}
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product Name</TableHead>
+                      <TableHead>Brand</TableHead>
+                      <TableHead>Designer</TableHead>
+                      <TableHead>Year</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Colors</TableHead>
+                      <TableHead>PDF Page</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredProducts.length > 0 ? (
+                      filteredProducts.map((product) => (
+                        <TableRow key={product.id}>
+                          <TableCell>{product.product_name || '-'}</TableCell>
+                          <TableCell>{product.brand_name || '-'}</TableCell>
+                          <TableCell>{product.designer || '-'}</TableCell>
+                          <TableCell>{product.year || '-'}</TableCell>
+                          <TableCell>{product.type_of_product || '-'}</TableCell>
+                          <TableCell title={product.all_colors?.join(', ')}>
+                            {renderColorsList(product.all_colors)}
+                          </TableCell>
+                          <TableCell>
+                            {product.page_reference && (
+                              <Button
+                                variant="link"
+                                asChild
+                              >
+                                <a
+                                  href={getPdfLink(product.page_reference)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  View Page
+                                </a>
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">
+                          No products match the selected filters
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>

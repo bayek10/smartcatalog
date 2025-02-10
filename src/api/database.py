@@ -1,11 +1,10 @@
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine, or_, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Dict, Optional
 from .models import Base, Product
 from .config import DATABASE_URL
 import logging
-import os
 import json
 
 logger = logging.getLogger(__name__)
@@ -56,14 +55,20 @@ class ProductDB:
             logging.error(f"Error getting product: {str(e)}")
             raise
     
-    def search(self, query: str, category: Optional[str] = None) -> List[Dict]:
+    def search(self, query: str = None, pdf: str = None) -> List[Dict]:
+        """Search products with optional PDF filter"""
         try:
             # Start with base query
             db_query = self.session.query(Product)
             
+            # Add PDF filter if provided
+            if pdf:
+                db_query = db_query.filter(
+                    Product.page_reference['file_path'].astext == pdf
+                )
+            
             # Add search conditions if query exists
             if query:
-                # Try to convert query to year if it's a number
                 try:
                     year_query = int(query)
                     year_filter = Product.year == year_query
@@ -90,6 +95,7 @@ class ProductDB:
 
     def get_all_products(self) -> List[Dict]:
         try:
+            self.session.execute(text("ROLLBACK")) # Add safety rollback in case of failed sql transactions
             products = self.session.query(Product).all()
             return [self._product_to_dict(p) for p in products]
         except SQLAlchemyError as e:
@@ -193,6 +199,11 @@ class ProductDB:
             self.session.rollback()
             logger.error(f"Error updating price data: {str(e)}")
             raise
+
+
+
+
+
 
 def reset_database(environment: str = 'local'):
     " Drop all tables and recreate with new schema. environment = local or cloud "

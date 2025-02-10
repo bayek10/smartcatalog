@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import logging
 from typing import List, Dict, Optional
 from pathlib import Path
-import pandas as pd
+# import pandas as pd
 import code
 
 logger = logging.getLogger(__name__)
@@ -217,6 +217,6 @@ if __name__ == "__main__":
     
     if price_data:
         print(f"\nExtracted {len(price_data)} price combinations:")
-        print(pd.DataFrame.from_records(price_data))
+        # print(pd.DataFrame.from_records(price_data))
     else:
         print("Failed to extract price data")

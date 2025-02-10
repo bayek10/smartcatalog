@@ -1,0 +1,228 @@
+{
+  "table_id": "table_019",
+  "product_name": "DRAGON CRYSTALART",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "0,62",
+      "EUR": "3.134",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "200x100x73h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₄h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "3.166",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "200x100x73h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₄h"
+    },
+    {
+      "M3": "0,75",
+      "EUR": "3.522",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "200x120x73h sag",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,75",
+      "EUR": "3.554",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "200x120x73h sag",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.526",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.558",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.704",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.736",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.204",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.242",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.378",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73g sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.416",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73g sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h shaped"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "0,62",
+      "EUR": "3.134",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "200x100x73h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₄h"
+    },
+    {
+      "M3": "0,62",
+      "EUR": "3.166",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "200x100x73h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₄h"
+    },
+    {
+      "M3": "0,75",
+      "EUR": "3.522",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "200x120x73h sag",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,75",
+      "EUR": "3.554",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "200x120x73h sag",
+      "Dimensions_INCHES": "78³/₄x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.526",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.558",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.704",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,78",
+      "EUR": "3.736",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "240x120x73h sag",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.204",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.242",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.378",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM69 / GFM73",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73g sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h shaped"
+    },
+    {
+      "M3": "0,94",
+      "EUR": "4.416",
+      "Top": "CrystalArt CY01 / CY02",
+      "Base": "GFM11 / GFM18",
+      "Colli": "5",
+      "Dimensions_CM": "300x120x73g sag",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x28³/₄h shaped"
+    }
+  ]
+}

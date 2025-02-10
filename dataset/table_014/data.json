@@ -1,0 +1,84 @@
+{
+  "table_id": "table_014",
+  "product_name": "ATLANTIS WOOD",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "1,01",
+      "EUR": "3.998",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "A 240x120x76h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,01",
+      "EUR": "4.017",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "A 240x120x76h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,12",
+      "EUR": "4.140",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "A 300x120x76h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,12",
+      "EUR": "4.158",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "A 300x120x76h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29⁷/₈h"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "1,01",
+      "EUR": "3.998",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "A 240x120x76h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,01",
+      "EUR": "4.017",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "3",
+      "Dimensions_CM": "A 240x120x76h",
+      "Dimensions_INCHES": "94¹/₂x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,12",
+      "EUR": "4.140",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM69 / GFM73 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "A 300x120x76h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29⁷/₈h"
+    },
+    {
+      "M3": "1,12",
+      "EUR": "4.158",
+      "Top": "NC / HR / RB / RN",
+      "Base": "GFM11 / GFM18 - 06",
+      "Colli": "4",
+      "Dimensions_CM": "A 300x120x76h",
+      "Dimensions_INCHES": "118¹/₈x47¹/₄x29⁷/₈h"
+    }
+  ]
+}

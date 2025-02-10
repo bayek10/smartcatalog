@@ -18,9 +18,11 @@ export default function Home() {
               quality={100}
               />
           </div>
-          <Link href="/login">
-            <Button variant="default">Sign in</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/login">
+              <Button variant="default">Sign in</Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -34,9 +36,12 @@ export default function Home() {
               <p className="text-xl text-muted-foreground text-center max-w-2xl mx-auto">
                 Use our AI-powered engine to transform your PDF product catalogs into a database in minutes. Save hours of manually going through PDFs to find information.
               </p>
-              <div className="flex justify-center">
+              <div className="flex justify-center gap-4">
+                <Link href="/dashboard">
+                  <Button size="lg">Try Demo</Button>
+                </Link>
                 <Link href="mailto:h5sami@uwaterloo.ca?subject=Inquiry%20about%20AI%20Data%20Extraction%20Software">
-                  <Button size="lg">Reach out</Button>
+                  <Button size="lg" variant="outline">Reach out</Button>
                 </Link>
               </div>
             </CardContent>

@@ -9,11 +9,13 @@ prod.env
 venv/
 .pytest_cache/
 
+# Firebase
+.firebase/
+
 # Node/React
 node_modules/
-/frontend/node_modules/
+.next/
 /frontend/build/
-/frontend/.next/
 /frontend/dist/
 /frontend/.cache/
 .env.local

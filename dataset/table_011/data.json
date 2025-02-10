@@ -1,0 +1,192 @@
+{
+  "table_id": "table_011",
+  "product_name": "DIAPASON",
+  "product_type": "table",
+  "pdf_name": "Cattelan Italia ITALIA 08.01.21-pages-2-11.pdf",
+  "prompt": "in prompt_claude.md file inside dataset folder",
+  "model_version": "claude-3-5-sonnet-20241022",
+  "ground_truth": [
+    {
+      "M3": "0,38",
+      "EUR": "2.368",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "ø130x72h",
+      "Dimensions_INCHES": "ø51¹/₈x28³/₈h"
+    },
+    {
+      "M3": "0,38",
+      "EUR": "2.720",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "ø130x72h",
+      "Dimensions_INCHES": "ø51¹/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.611",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "180x120x72h ovale",
+      "Dimensions_INCHES": "70⁷/₈x47¹/₄x28³/₈h oval"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.949",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "180x120x72h ovale",
+      "Dimensions_INCHES": "70⁷/₈x47¹/₄x28³/₈h oval"
+    },
+    {
+      "M3": "0,39",
+      "EUR": "2.281",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "200x100x72h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,39",
+      "EUR": "2.613",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "200x100x72h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.548",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "220x100x72h oblungo",
+      "Dimensions_INCHES": "86⁵/₈x39³/₈x28³/₈h obl"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.886",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "220x100x72h oblungo",
+      "Dimensions_INCHES": "86⁵/₈x39³/₈x28³/₈h obl"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.395",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "240x100x72h",
+      "Dimensions_INCHES": "94¹/₂x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.727",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "240x100x72h",
+      "Dimensions_INCHES": "94¹/₂x39³/₈x28³/₈h"
+    }
+  ],
+  "model_output": [
+    {
+      "M3": "0,38",
+      "EUR": "2.368",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "ø130x72h",
+      "Dimensions_INCHES": "ø51¹/₈x28³/₈h"
+    },
+    {
+      "M3": "0,38",
+      "EUR": "2.720",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "ø130x72h",
+      "Dimensions_INCHES": "ø51¹/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.611",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "180x120x72h ovale",
+      "Dimensions_INCHES": "70⁷/₈x47¹/₄x28³/₈h oval"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.949",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "180x120x72h ovale",
+      "Dimensions_INCHES": "70⁷/₈x47¹/₄x28³/₈h oval"
+    },
+    {
+      "M3": "0,39",
+      "EUR": "2.281",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "200x100x72h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,39",
+      "EUR": "2.613",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "200x100x72h",
+      "Dimensions_INCHES": "78³/₄x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.548",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "220x100x72h oblungo",
+      "Dimensions_INCHES": "86⁵/₈x39³/₈x28³/₈h obl"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.886",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "220x100x72h oblungo",
+      "Dimensions_INCHES": "86⁵/₈x39³/₈x28³/₈h obl"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.395",
+      "Top": "Cristallo trasparente",
+      "Base": "TN",
+      "Colli": "3",
+      "Dimensions_CM": "240x100x72h",
+      "Dimensions_INCHES": "94¹/₂x39³/₈x28³/₈h"
+    },
+    {
+      "M3": "0,41",
+      "EUR": "2.727",
+      "Top": "Cristallo trasparente",
+      "Base": "BC",
+      "Colli": "3",
+      "Dimensions_CM": "240x100x72h",
+      "Dimensions_INCHES": "94¹/₂x39³/₈x28³/₈h"
+    }
+  ]
+}

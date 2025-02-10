@@ -33,20 +33,27 @@ export default function UploadPage() {
 
     const formData = new FormData()
     formData.append('file', selectedFile)
-    alert("API: "+API_URL)
 
     try {
-      const response = await fetch(`${API_URL}/upload-pdf`, {
+      const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formData
       })
 
       if (!response.ok) throw new Error('Upload failed')
-
+      
+      const data = await response.json() // Get the response data
+      
       setProgress(100)
       toast({
-        title: "Success!",
-        description: "PDF processed successfully",
+        title: "PDF Processed Successfully!",
+        description: (
+          <div className="space-y-2">
+            <p>{data.message}</p>
+            <p>Go to the Product Library to view the products</p>
+            </div>
+        ),
+        duration: 6000, // Show for 6 seconds since there's more text to read
       })
 
     } catch (error) {
